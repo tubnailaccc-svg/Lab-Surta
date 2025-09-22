@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lab Surta - Alat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- Font Awesome tidak lagi diperlukan jika hanya ikon ini yang diganti -->
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" /> -->
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: #f8f9fa;
+      color: #333;
+    }
+
+    /* HEADER - sticky */
+    header {
+      background-color: #ff6600;
+      color: #fff;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 70px;
+    }
+
+    header .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    header .logo img {
+      width: 48px;
+      border-radius: 6px;
+    }
+
+    header .text-logo h1 {
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 1.1;
+      color: #fff;
+    }
+
+    header .text-logo span {
+      font-weight: 400;
+      font-size: 14px;
+      color: #f1f1f1;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #fff;
+      transition: width 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #222;
+    }
+
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+    nav ul li a[aria-current="page"] {
+      font-weight: 700;
+      border-bottom: 2px solid #fff;
+    }
+
+    /* MAIN CONTENT */
+    main {
+      max-width: 1280px;
+      margin: 40px auto 60px;
+      padding: 0 20px;
+      width: 100%;
+      flex-grow: 1;
+    }
+
+    /* Page Header - New Style */
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 30px 0;
+      background: linear-gradient(135deg, #ff6600, #ff8c00);
+      border-radius: 15px;
+      color: white;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex; /* Menggunakan flexbox untuk menata ikon dan teks */
+      align-items: center;
+      justify-content: center;
+      gap: 5px; /* Jarak antara ikon dan teks */
+    }
+
+    /* Gaya untuk ikon gambar baru */
+    .page-header .header-icon {
+      width: 100px; /* Sesuaikan ukuran ikon */
+      height: 100px;
+      object-fit: contain; /* Pastikan gambar tidak terpotong */
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); /* Tambahkan sedikit bayangan */
+      margin-right: -25px; /* margin negatif agar ikon menempel ke teks */
+    }
+
+    .page-header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Grid alat */
+    .alat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 28px;
+      justify-content: center;
+    }
+
+    .alat-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(255, 102, 0, 0.15);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+      min-width: 280px;
+    }
+
+    .alat-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 28px rgba(255, 102, 0, 0.3);
+    }
+
+    .alat-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background-color: #eee;
+    }
+
+    .alat-content {
+      padding: 20px 24px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .alat-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ff6600;
+      margin-bottom: 12px;
+      text-transform: capitalize;
+    }
+
+    .alat-desc {
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.5;
+      flex-grow: 1;
+    }
+
+    /* Tombol pinjam */
+    .btn-pinjam {
+      display: inline-block;
+      background-color: #ff6600;
+      color: #fff;
+      font-weight: 600;
+      padding: 14px 36px;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 6px 12px rgba(255, 102, 0, 0.6);
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+      margin: 40px auto 0;
+      display: block;
+      max-width: 220px;
+      text-align: center;
+    }
+
+    .btn-pinjam:hover {
+      background-color: #cc5200;
+      box-shadow: 0 8px 16px rgba(204, 82, 0, 0.8);
+    }
+
+    /* FOOTER */
+    footer {
+      background-color: #ff6600;
+      color: #333;
+      text-align: center;
+      font-size: 13px;
+      padding: 18px 20px;
+      flex-shrink: 0;
+      height: 60px;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 20px;
+        height: 60px;
+      }
+      nav ul {
+        gap: 16px;
+      }
+      main {
+        margin: 30px auto 40px;
+      }
+      .btn-pinjam {
+        padding: 12px 28px;
+        font-size: 1rem;
+        max-width: 100%;
+      }
+      .alat-image {
+        height: 140px;
+      }
+      .page-header h1 {
+        font-size: 2rem;
+        gap: 10px; /* Sesuaikan jarak ikon di mobile */
+      }
+      .page-header .header-icon {
+        width: 40px; /* Sesuaikan ukuran ikon di mobile */
+        height: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="IMG/logoitenas.png" alt="Logo Lab Surta" />
+      <div class="text-logo">
+        <h1>Laboratorium Surta</h1>
+        <span>Teknik Geodesi</span>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pratikum.html">Praktikum</a></li>
+        <li><a href="alat.html">Alat</a></li>
+        <li><a href="daftarasisten.html">Daftar Asisten</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="page-header">
+      <h1>
+        <img src="IMG/logoalat.png" alt="Ikon Lab Surta" class="header-icon" />
+        Daftar Peralatan Laboratorium
+      </h1>
+      <p>Temukan berbagai alat survei dan geospasial canggih yang tersedia di Lab Surta untuk mendukung praktikum dan penelitian Anda.</p>
+    </div>
+
+    <div class="alat-grid">
+      <div class="alat-card">
+        <img src="images/total-station-gts255.jpg" alt="Total Station GTS 255" class="alat-image" />
+        <div class="alat-content">
+          <h3 class="alat-title">Total Station GTS 255</h3>
+          <p class="alat-desc">Alat survei elektronik yang menggabungkan fungsi theodolite dan EDM untuk pengukuran sudut dan jarak secara presisi.</p>
+        </div>
+      </div>
+      <div class="alat-card">
+        <img src="images/total-station-gm52.jpg" alt="Total Station GM 52" class="alat-image" />
+        <div class="alat-content">
+          <h3 class="alat-title">Total Station GM 52</h3>
+          <p class="alat-desc">Total station dengan teknologi canggih untuk pengukuran cepat dan akurat di lapangan survei.</p>
+        </div>
+      </div>
+      <div class="alat-card">
+        <img src="images/total-station-zts320r.jpg" alt="Total Station ZTS-320R" class="alat-image" />
+        <div class="alat-content">
+          <h3 class="alat-title">Total Station ZTS-320R</h3>
+          <p class="alat-desc">Alat total station dengan fitur rotasi 360° dan kemampuan pengukuran jarak jauh yang presisi.</p>
+        </div>
+      </div>
+      <div class="alat-card">
+        <img src="images/theodolite.jpg" alt="Theodolite" class="alat-image" />
+        <div class="alat-content">
+          <h3 class="alat-title">Theodolite</h3>
+          <p class="alat-desc">Instrumen optik untuk mengukur sudut horizontal dan vertikal dalam survei tanah dan konstruksi.</p>
+        </div>
+      </div>
+      <div class="alat-card">
+        <img src="images/theodolite-t0.jpg" alt="Theodolite T0" class="alat-image" />
+        <div class="alat-content">
+          <h3 class="alat-title">Theodolite T0</h3>
+          <p class="alat-desc">Varian theodolite dengan fitur tambahan untuk pengukuran sudut yang lebih presisi dan mudah digunakan.</p>
+        </div>
+      </div>
+      <div class="alat-card">
+        <img src="images/prisma.jpg" alt="Prisma" class="alat-image" />
+        <div class="alat-content">
+          <h3 class="alat-title">Prisma</h3>
+          <p class="alat-desc">Alat reflektor yang digunakan bersama total station untuk memantulkan sinar laser dan mengukur jarak.</p>
+        </div>
+      </div>
+      <div class="alat-card">
+        <img src="images/tribah.jpg" alt="Tribah" class="alat-image" />
+        <div class="alat-content">
+          <h3 class="alat-title">Tribah</h3>
+          <p class="alat-desc">Alat untuk mengukur sudut horizontal dan vertikal dengan presisi tinggi dalam survei geodesi.</p>
+        </div>
+      </div>
+      <div class="alat-card">
+        <img src="images/waterpass-topcon.jpg" alt="Waterpass Topcon" class="alat-image" />
+        <div class="alat-content">
+          <h3 class="alat-title">Waterpass Topcon</h3>
+          <p class="alat-desc">Instrumen untuk mengukur perbedaan elevasi dan memastikan permukaan rata dalam konstruksi dan survei.</p>
+        </div>
+      </div>
+      <div class="alat-card">
+        <img src="images/rambu-ukur.jpg" alt="Rambu Ukur" class="alat-image" />
+        <div class="alat-content">
+          <h3 class="alat-title">Rambu Ukur</h3>
+          <p class="alat-desc">Alat bantu ukur berupa tongkat bertanda yang digunakan untuk menentukan jarak dan elevasi.</p>
+        </div>
+      </div>
+      <div class="alat-card">
+        <img src="images/jalon.jpg" alt="Jalon" class="alat-image" />
+        <div class="alat-content">
+          <h3 class="alat-title">Jalon</h3>
+          <p class="alat-desc">Tongkat panjang yang digunakan sebagai penanda titik survei di lapangan.</p>
+        </div>
+      </div>
+      <div class="alat-card">
+        <img src="images/gps-hitarget.jpg" alt="GPS HiTarget" class="alat-image" />
+        <div class="alat-content">
+          <h3 class="alat-title">GPS HiTarget</h3>
+          <p class="alat-desc">Perangkat GPS presisi tinggi untuk penentuan posisi dan navigasi dalam survei geospasial.</p>
+        </div>
+      </div>
+    </div>
+
+    <a href="pinjam-alat.html" class="btn-pinjam" role="button">Pinjam Alat</a>
+  </main>
+
+  <footer>
+    <p>© 2025 Lab Surta - Teknik Geodesi</p>
+  </footer>
+</body>
+</html>

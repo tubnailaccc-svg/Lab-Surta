@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lab Surta - Asisten</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+      background: #f8f9fa;
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* HEADER - sticky */
+    header {
+      background-color: #ff6600;
+      color: #fff;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 70px;
+    }
+    header .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header .logo img {
+      width: 48px;
+      border-radius: 6px;
+    }
+    header .text-logo h1 {
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 1.1;
+      color: #fff;
+    }
+    header .text-logo span {
+      font-weight: 400;
+      font-size: 14px;
+      color: #f1f1f1;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.3s ease;
+    }
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #fff;
+      transition: width 0.3s ease;
+    }
+    nav ul li a:hover {
+      color: #222;
+    }
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+
+    /* MAIN */
+    main {
+      max-width: 1100px;
+      margin: 40px auto 60px;
+      padding: 0 20px;
+      flex-grow: 1;
+      width: 100%;
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #ff6600;
+      margin-bottom: 32px;
+      border-left: 8px solid #ff6600;
+      padding-left: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+    }
+
+    /* Filter tahun */
+    .year-filter {
+      margin-bottom: 30px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .year-filter button {
+      background-color: #ff6600;
+      border: none;
+      color: white;
+      font-weight: 600;
+      padding: 10px 24px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    .year-filter button.active,
+    .year-filter button:hover {
+      background-color: #cc5200;
+    }
+
+    /* Praktikum list */
+    .praktikum-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .praktikum-item {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(255, 102, 0, 0.15);
+      padding: 20px 24px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      outline-offset: 4px;
+    }
+    .praktikum-item:hover,
+    .praktikum-item:focus-visible {
+      background-color: #fff3e6;
+      outline: 2px solid #ff6600;
+    }
+    .praktikum-item h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ff6600;
+      margin-bottom: 8px;
+      user-select: none;
+    }
+
+    /* Asisten list */
+    .asisten-list {
+      margin-top: 12px;
+      padding-left: 0;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      list-style: none;
+    }
+    .asisten-list.active {
+      display: flex;
+    }
+    .asisten-list li {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 1rem;
+      color: #555;
+      user-select: none;
+      background: #fff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(255, 102, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+    }
+    .asisten-list li:hover {
+      box-shadow: 0 4px 14px rgba(255, 102, 0, 0.25);
+    }
+    .asisten-photo {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #ff6600;
+      flex-shrink: 0;
+      background-color: #eee;
+    }
+    .asisten-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .asisten-name {
+      font-weight: 600;
+      color: #ff6600;
+    }
+    .asisten-nrp {
+      font-size: 0.9rem;
+      color: #777;
+      font-style: italic;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 20px;
+        height: 60px;
+      }
+      nav ul {
+        gap: 16px;
+      }
+      main {
+        margin: 30px auto 40px;
+      }
+      .year-filter button {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+      }
+      .praktikum-item h3 {
+        font-size: 1.2rem;
+      }
+      .asisten-photo {
+        width: 40px;
+        height: 40px;
+      }
+      .asisten-list li {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="./logoitenas.png" alt="Logo Lab Surta" />
+      <div class="text-logo">
+        <h1>Laboratorium Surta</h1>
+        <span>Teknik Geodesi</span>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pratikum.html" aria-current="page">Praktikum</a></li>
+        <li><a href="alat.html">Alat</a></li>
+        <li><a href="asisten.html" aria-current="page">Asisten</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2 class="page-title">Asisten</h2>
+
+    <div class="year-filter" role="tablist" aria-label="Filter Tahun">
+      <button type="button" class="active" data-year="2024" aria-selected="true" role="tab" id="tab-2024" aria-controls="panel-2024">2024</button>
+      <button type="button" data-year="2025" aria-selected="false" role="tab" id="tab-2025" aria-controls="panel-2025">2025</button>
+    </div>
+
+    <section id="panel-2024" role="tabpanel" aria-labelledby="tab-2024">
+      <div class="praktikum-list">
+        <div class="praktikum-item" tabindex="0" aria-expanded="false" aria-controls="asisten-2024-kemah">
+          <h3>Kemah Geospasial</h3>
+          <ul class="asisten-list" id="asisten-2024-kemah" aria-hidden="true">
+            <li>
+              <img src="images/andi-prasetyo.jpg" alt="Foto Andi Prasetyo" class="asisten-photo" />
+              <div class="asisten-info">
+                <span class="asisten-name">Andi Prasetyo</span>
+                <span class="asisten-nrp">NRP: 123456789</span>
+              </div>
+            </li>
+            <li>
+              <img src="images/sari-wulandari.jpg" alt="Foto Sari Wulandari" class="asisten-photo" />
+              <div class="asisten-info">
+                <span class="asisten-name">Sari Wulandari</span>
+                <span class="asisten-nrp">NRP: 987654321</span>
+              </div>
+            </li>
+            <li>
+              <img src="images/rizky-maulana.jpg" alt="Foto Rizky Maulana" class="asisten-photo" />
+              <div class="asisten-info">
+                <span class="asisten-name">Rizky Maulana</span>
+                <span class="asisten-nrp">NRP: 112233445</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- Tambahkan praktikum lain dengan struktur sama -->
+        <div class="praktikum-item" tabindex="0" aria-expanded="false" aria-controls="asisten-2024-survei">
+          <h3>Survei Terestris</h3>
+          <ul class="asisten-list" id="asisten-2024-survei" aria-hidden="true">
+            <li>
+              <img src="images/dewi-anggraini.jpg" alt="Foto Dewi Anggraini" class="asisten-photo" />
+              <div class="asisten-info">
+                <span class="asisten-name">Dewi Anggraini</span>
+                <span class="asisten-nrp">NRP: 223344556</span>
+              </div>
+            </li>
+            <li>
+              <img src="images/fajar-nugroho.jpg" alt="Foto Fajar Nugroho" class="asisten-photo" />
+              <div class="asisten-info">
+                <span class="asisten-name">Fajar Nugroho</span>
+                <span class="asisten-nrp">NRP: 334455667</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- Tambahkan praktikum lain sesuai kebutuhan -->
+      </div>
+    </section>
+
+    <section id="panel-2025" role="tabpanel" aria-labelledby="tab-2025" hidden>
+      <div class="praktikum-list">
+        <div class="praktikum-item" tabindex="0" aria-expanded="false" aria-controls="asisten-2025-kemah">
+          <h3>Kemah Geospasial</h3>
+          <ul class="asisten-list" id="asisten-2025-kemah" aria-hidden="true">
+            <li>
+              <img src="images/rizal-fauzi.jpg" alt="Foto Rizal Fauzi" class="asisten-photo" />
+              <div class="asisten-info">
+                <span class="asisten-name">Rizal Fauzi</span>
+                <span class="asisten-nrp">NRP: 121314151</span>
+              </div>
+            </li>
+            <li>
+              <img src="images/yuni-astuti.jpg" alt="Foto Yuni Astuti" class="asisten-photo" />
+              <div class="asisten-info">
+                <span class="asisten-name">Yuni Astuti</span>
+                <span class="asisten-nrp">NRP: 161718192</span>
+              </div>
+            </li>
+            <li>
+              <img src="images/fikri-ramadhan.jpg" alt="Foto Fikri Ramadhan" class="asisten-photo" />
+              <div class="asisten-info">
+                <span class="asisten-name">Fikri Ramadhan</span>
+                <span class="asisten-nrp">NRP: 202122232</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- Tambahkan praktikum lain sesuai kebutuhan -->
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Lab Surta - Teknik Geodesi</p>
+  </footer>
+
+  <script>
+    // Tahun filter tabs
+    const yearButtons = document.querySelectorAll('.year-filter button');
+    const panels = document.querySelectorAll('main section[role="tabpanel"]');
+
+    yearButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Update active button
+        yearButtons.forEach(btn => {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-selected', 'false');
+        });
+        button.classList.add('active');
+        button.setAttribute('aria-selected', 'true');
+
+        // Show/hide panels
+        const year = button.dataset.year;
+        panels.forEach(panel => {
+          if(panel.id === `panel-${year}`) {
+            panel.hidden = false;
+          } else {
+            panel.hidden = true;
+          }
+        });
+      });
+    });
+
+    // Toggle asisten list on praktikum click
+    const praktikumItems = document.querySelectorAll('.praktikum-item');
+
+    praktikumItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const asistenList = item.querySelector('.asisten-list');
+        const expanded = item.getAttribute('aria-expanded') === 'true';
+
+        if (expanded) {
+          // Close this list
+          item.setAttribute('aria-expanded', 'false');
+          asistenList.classList.remove('active');
+          asistenList.setAttribute('aria-hidden', 'true');
+        } else {
+          // Close all others in same panel
+          const parentPanel = item.closest('section[role="tabpanel"]');
+          parentPanel.querySelectorAll('.praktikum-item').forEach(pi => {
+            pi.setAttribute('aria-expanded', 'false');
+            pi.querySelector('.asisten-list').classList.remove('active');
+            pi.querySelector('.asisten-list').setAttribute('aria-hidden', 'true');
+          });
+          // Open this one
+          item.setAttribute('aria-expanded', 'true');
+          asistenList.classList.add('active');
+          asistenList.setAttribute('aria-hidden', 'false');
+          item.focus();
+        }
+      });
+
+      // Keyboard accessibility: toggle on Enter or Space
+      item.addEventListener('keydown', e => {
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          item.click();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

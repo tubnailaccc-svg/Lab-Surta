@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Peminjaman Alat - Laboratorium Surta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f8f9fa;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    header {
+      background-color: #ff6600;
+      color: #fff;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 70px;
+    }
+    header .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header .logo img {
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
+      object-fit: contain;
+    }
+    header .text-logo h1 {
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 1.1;
+      color: #fff;
+      margin: 0;
+    }
+    header .text-logo span {
+      font-weight: 400;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.85);
+      margin: 0;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #fff;
+      transition: width 0.3s ease;
+    }
+    nav ul li a:hover {
+      color: #222;
+    }
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+    nav ul li a[aria-current="page"] {
+      font-weight: 700;
+      border-bottom: 2px solid #fff;
+    }
+
+    /* MAIN */
+    main {
+      max-width: 900px;
+      margin: 40px auto 60px;
+      padding: 0 20px;
+      flex-grow: 1;
+      width: 100%;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(255, 102, 0, 0.15);
+    }
+    h2.section-title {
+      color: #ff6600;
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 24px;
+      border-left: 8px solid #ff6600;
+      padding-left: 12px;
+      text-transform: uppercase;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Input Umum (text, number, date, select, textarea) */
+    select, input[type="text"], input[type="number"], textarea, input[type="date"] {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 1rem;
+      border: 2px solid #ff6600;
+      border-radius: 8px;
+      outline-offset: 2px;
+      transition: border-color 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+    select:focus, input[type="text"]:focus, input[type="number"]:focus, textarea:focus, input[type="date"]:focus {
+      border-color: #cc5200;
+    }
+    label {
+      font-weight: 600;
+      color: #ff6600;
+      font-size: 1.1rem;
+      user-select: none;
+      margin-bottom: 4px;
+      display: block;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* Baris Nama & NRP */
+    .user-info-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .user-info-row > div {
+      flex-grow: 1;
+      min-width: 280px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Baris alat + jumlah + tombol */
+    .input-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .input-row > * {
+      flex-grow: 1;
+    }
+    input[type="number"] {
+      max-width: 100px;
+    }
+    button#btnTambah {
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 102, 0, 0.3);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      flex-grow: 0;
+      flex-shrink: 0;
+      user-select: none;
+    }
+    button#btnTambah:hover {
+      background-color: #cc5200;
+      transform: translateY(-2px);
+    }
+
+    /* Input Nomor Seri Dinamis */
+    .serial-number-section {
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px dashed #ff6600;
+      border-radius: 8px;
+      background-color: #fffaf5;
+    }
+    .serial-number-section h4 {
+      color: #cc5200;
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+    }
+    .serial-number-inputs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .serial-number-inputs input {
+      border: 1px solid #ff6600;
+    }
+
+    /* Tanggal dan keterangan */
+    .date-desc-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+    .date-desc-row > div {
+      flex-grow: 1;
+      min-width: 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Daftar alat yang dipinjam */
+    .list-peminjaman {
+      margin-top: 32px;
+      border-top: 2px solid #ff6600;
+      padding-top: 20px;
+    }
+    .list-peminjaman h3 {
+      color: #ff6600;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1rem;
+    }
+    th, td {
+      border: 1px solid #ff6600;
+      padding: 10px 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #fff3e6;
+      color: #cc5200;
+    }
+    td.actions {
+      text-align: center;
+      width: 80px;
+    }
+    button.remove-btn {
+      background-color: #cc5200;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    button.remove-btn:hover {
+      background-color: #ff6600;
+    }
+
+    /* Tombol Print dan Reset */
+    .btn-group {
+      margin: 30px auto 0;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    button#btnPrint, button#btnReset {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      user-select: none;
+    }
+    button#btnPrint:hover, button#btnReset:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    /* FOOTER */
+    footer {
+      background-color: #ff6600;
+      color: #333;
+      text-align: center;
+      font-size: 13px;
+      padding: 18px 20px;
+      flex-shrink: 0;
+      height: 60px;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+      margin-top: auto;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .date-desc-row, .user-info-row {
+        flex-direction: column;
+      }
+      .btn-group {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+    @media (max-width: 600px) {
+      .input-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      input[type="number"] {
+        max-width: 100%;
+      }
+    }
+
+    /* Print Specific Styles */
+    @media print {
+      header, footer, .input-row, .serial-number-section, .btn-group, .remove-btn {
+        display: none !important;
+      }
+      main {
+        margin: 0;
+        padding: 20px;
+        box-shadow: none;
+        border-radius: 0;
+      }
+      h2.section-title {
+        text-align: center;
+        border-left: none;
+        padding-left: 0;
+        margin-bottom: 30px;
+      }
+      .user-info-row, .date-desc-row {
+        display: block;
+        margin-bottom: 20px;
+      }
+      .user-info-row > div, .date-desc-row > div {
+        margin-bottom: 10px;
+      }
+      .user-info-row label, .date-desc-row label {
+        font-weight: bold;
+        color: #333;
+        margin-right: 10px;
+      }
+      .user-info-row input, .date-desc-row input, .date-desc-row textarea {
+        border: none;
+        padding: 0;
+        display: inline-block;
+        width: auto;
+        font-size: 1rem;
+        font-family: 'Poppins', sans-serif;
+      }
+      .list-peminjaman {
+        border-top: none;
+        padding-top: 0;
+      }
+      table {
+        border: 1px solid #333;
+      }
+      th, td {
+        border: 1px solid #333;
+        padding: 8px;
+      }
+      th {
+        background-color: #eee;
+        color: #333;
+      }
+      #descPeminjaman {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="./logoitenas.png" alt="Logo Lab Surta" />
+      <div class="text-logo">
+        <h1>Laboratorium Surta</h1>
+        <span>Teknik Geodesi</span>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="praktikum.html">Praktikum</a></li>
+        <li><a href="alat.html">Alat</a></li>
+        <li><a href="peminjaman.html" aria-current="page">Peminjaman</a></li>
+        <li><a href="asisten.html">Asisten</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2 class="section-title">Form Peminjaman Alat</h2>
+    <form id="formPeminjaman" autocomplete="off" novalidate>
+      <!-- Input Nama dan NRP -->
+      <div class="user-info-row">
+        <div>
+          <label for="namaPeminjam">Nama Peminjam</label>
+          <input type="text" id="namaPeminjam" placeholder="Masukkan nama lengkap" aria-required="true" required />
+        </div>
+        <div>
+          <label for="nrpPeminjam">NRP</label>
+          <input type="text" id="nrpPeminjam" placeholder="Masukkan NRP" aria-required="true" required />
+        </div>
+      </div>
+
+      <div class="input-row">
+        <select id="selectAlat" aria-label="Pilih alat yang ingin dipinjam">
+          <option value="" disabled selected>Pilih alat...</option>
+          <option value="Total Station">Total Station</option>
+          <option value="GPS">GPS</option>
+          <option value="Theodolite">Theodolite</option>
+          <option value="Waterpass">Waterpass</option>
+          <option value="Meteran">Meteran</option>
+          <option value="Lainnya">Lainnya (ketik di samping)</option>
+        </select>
+        <input type="text" id="inputAlatLain" placeholder="Ketik nama alat jika tidak ada di daftar" aria-label="Nama alat lain" disabled />
+        <input type="number" id="inputJumlah" min="1" value="1" aria-label="Jumlah alat yang dipinjam" />
+        <button type="button" id="btnTambah" aria-label="Tambah alat ke daftar peminjaman">Tambah</button>
+      </div>
+
+      <!-- Bagian untuk input nomor seri dinamis -->
+      <div id="serialNumberSection" class="serial-number-section" style="display: none;">
+        <h4>Masukkan Nomor Seri untuk <span id="serialAlatNama"></span> (<span id="serialAlatJumlah"></span> unit)</h4>
+        <div id="serialNumberInputs" class="serial-number-inputs">
+          <!-- Input nomor seri akan ditambahkan di sini oleh JavaScript -->
+        </div>
+      </div>
+
+      <div class="date-desc-row">
+        <div>
+          <label for="tanggalPinjam">Tanggal Peminjaman</label>
+          <input type="date" id="tanggalPinjam" aria-required="true" required />
+        </div>
+        <div>
+          <label for="tanggalKembali">Tanggal Pengembalian</label>
+          <input type="date" id="tanggalKembali" aria-required="true" required />
+        </div>
+        <div>
+          <label for="keterangan">Keterangan Meminjam</label>
+          <textarea id="keterangan" placeholder="Tambahkan keterangan jika perlu..." rows="3" aria-label="Keterangan meminjam"></textarea>
+        </div>
+      </div>
+    </form>
+
+    <div class="list-peminjaman" aria-live="polite" aria-atomic="true">
+      <h3>Daftar Alat yang Dipinjam</h3>
+      <table id="tabelPeminjaman" aria-describedby="descPeminjaman">
+        <thead>
+          <tr>
+            <th>Nama Alat</th>
+            <th>Jumlah</th>
+            <th>Nomor Seri</th>
+            <th class="actions">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="kosongRow"><td colspan="4" style="text-align:center; color:#999;">Belum ada alat yang ditambahkan</td></tr>
+        </tbody>
+      </table>
+      <p id="descPeminjaman" class="sr-only">Daftar alat yang akan dipinjam beserta jumlahnya. Gunakan tombol hapus untuk menghapus alat dari daftar.</p>
+    </div>
+
+    <div class="btn-group">
+      <button type="button" id="btnPrint">Cetak Formulir</button>
+      <button type="button" id="btnReset">Reset Formulir</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Lab Surta - Teknik Geodesi</p>
+  </footer>
+
+  <script>
+    const selectAlat = document.getElementById('selectAlat');
+    const inputAlatLain = document.getElementById('inputAlatLain');
+    const inputJumlah = document.getElementById('inputJumlah');
+    const btnTambah = document.getElementById('btnTambah');
+    const tabelPeminjaman = document.getElementById('tabelPeminjaman').querySelector('tbody');
+    const kosongRow = document.getElementById('kosongRow');
+
+    const serialNumberSection = document.getElementById('serialNumberSection');
+    const serialAlatNama = document.getElementById('serialAlatNama');
+        const serialNumberInputsContainer = document.getElementById('serialNumberInputs');
+
+    const namaPeminjamInput = document.getElementById('namaPeminjam');
+    const nrpPeminjamInput = document.getElementById('nrpPeminjam');
+    const tanggalPinjamInput = document.getElementById('tanggalPinjam');
+    const tanggalKembaliInput = document.getElementById('tanggalKembali');
+    const keteranganInput = document.getElementById('keterangan');
+    const btnPrint = document.getElementById('btnPrint');
+    const btnReset = document.getElementById('btnReset');
+
+    // Daftar alat yang memerlukan nomor seri
+    const ALAT_DENGAN_NOMOR_SERI = ['Total Station', 'Waterpass'];
+
+    // Fungsi untuk menampilkan/menyembunyikan input alat lain
+    selectAlat.addEventListener('change', () => {
+      if (selectAlat.value === 'Lainnya') {
+        inputAlatLain.disabled = false;
+        inputAlatLain.focus();
+      } else {
+        inputAlatLain.value = '';
+        inputAlatLain.disabled = true;
+      }
+      // Sembunyikan bagian nomor seri saat pilihan alat berubah
+      serialNumberSection.style.display = 'none';
+      serialNumberInputsContainer.innerHTML = ''; // Bersihkan input nomor seri
+    });
+
+    // Fungsi untuk menampilkan input nomor seri saat jumlah atau alat berubah
+    function toggleSerialNumberInputs() {
+      let namaAlat = selectAlat.value;
+      if (namaAlat === 'Lainnya') {
+        namaAlat = inputAlatLain.value.trim();
+      }
+
+      const jumlah = parseInt(inputJumlah.value);
+
+      if (ALAT_DENGAN_NOMOR_SERI.includes(namaAlat) && jumlah > 0) {
+        serialNumberSection.style.display = 'block';
+        serialAlatNama.textContent = namaAlat;
+        serialAlatJumlah.textContent = jumlah;
+        serialNumberInputsContainer.innerHTML = ''; // Bersihkan input sebelumnya
+
+        for (let i = 0; i < jumlah; i++) {
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.classList.add('serial-number-input');
+          input.placeholder = `Nomor Seri Unit ${i + 1}`;
+          input.setAttribute('aria-label', `Nomor Seri Unit ${i + 1} untuk ${namaAlat}`);
+          input.required = true; // Nomor seri wajib diisi
+          serialNumberInputsContainer.appendChild(input);
+        }
+      } else {
+        serialNumberSection.style.display = 'none';
+        serialNumberInputsContainer.innerHTML = '';
+      }
+    }
+
+    inputJumlah.addEventListener('change', toggleSerialNumberInputs);
+    selectAlat.addEventListener('change', toggleSerialNumberInputs);
+    inputAlatLain.addEventListener('input', toggleSerialNumberInputs); // Jika alat lain diisi dan itu adalah alat berseri
+
+    btnTambah.addEventListener('click', () => {
+      const namaPeminjam = namaPeminjamInput.value.trim();
+      const nrpPeminjam = nrpPeminjamInput.value.trim();
+
+      if (!namaPeminjam) {
+        alert('Nama Peminjam harus diisi.');
+        namaPeminjamInput.focus();
+        return;
+      }
+      if (!nrpPeminjam) {
+        alert('NRP Peminjam harus diisi.');
+        nrpPeminjamInput.focus();
+        return;
+      }
+
+      let namaAlat = selectAlat.value;
+      if (!namaAlat) {
+        alert('Silakan pilih alat atau ketik nama alat lain.');
+        selectAlat.focus();
+        return;
+      }
+      if (namaAlat === 'Lainnya') {
+        namaAlat = inputAlatLain.value.trim();
+        if (!namaAlat) {
+          alert('Silakan ketik nama alat yang ingin dipinjam.');
+          inputAlatLain.focus();
+          return;
+        }
+      }
+      let jumlah = parseInt(inputJumlah.value);
+      if (isNaN(jumlah) || jumlah < 1) {
+        alert('Jumlah alat harus minimal 1.');
+        inputJumlah.focus();
+        return;
+      }
+
+      let serialNumbers = [];
+      if (ALAT_DENGAN_NOMOR_SERI.includes(namaAlat)) {
+        const snInputs = serialNumberInputsContainer.querySelectorAll('.serial-number-input');
+        if (snInputs.length !== jumlah) {
+            alert('Jumlah input nomor seri tidak sesuai dengan jumlah alat.');
+            return;
+        }
+        let hasEmptySN = false;
+        snInputs.forEach(input => {
+          const sn = input.value.trim();
+          if (!sn) {
+            hasEmptySN = true;
+          }
+          serialNumbers.push(sn);
+        });
+
+        if (hasEmptySN) {
+            alert('Semua nomor seri harus diisi.');
+            return;
+        }
+
+        // Validasi nomor seri unik (opsional, tapi sangat disarankan)
+        const uniqueSerialNumbers = new Set(serialNumbers);
+        if (uniqueSerialNumbers.size !== serialNumbers.length) {
+            alert('Nomor seri tidak boleh ada yang sama. Mohon periksa kembali.');
+            return;
+        }
+      }
+
+      // Untuk alat dengan nomor seri, setiap nomor seri dianggap unit terpisah,
+      // tapi di tabel kita gabungkan nomor serinya dalam satu sel, dipisah koma.
+      // Untuk alat tanpa nomor seri, jumlah bisa digabungkan jika nama alat sama.
+
+      let found = false;
+      if (!ALAT_DENGAN_NOMOR_SERI.includes(namaAlat)) {
+          const rows = tabelPeminjaman.querySelectorAll('tr:not(#kosongRow)');
+          rows.forEach(row => {
+              const cellAlat = row.querySelector('td:first-child').textContent;
+              if (cellAlat.toLowerCase() === namaAlat.toLowerCase()) {
+                  const cellJumlah = row.querySelector('td:nth-child(2)');
+                  let currentJumlah = parseInt(cellJumlah.textContent);
+                  cellJumlah.textContent = currentJumlah + jumlah;
+                  found = true;
+              }
+          });
+      }
+
+      if (!found) {
+        // Hapus row kosong jika ada
+        if (kosongRow) kosongRow.style.display = 'none';
+
+        const tr = document.createElement('tr');
+        const tdAlat = document.createElement('td');
+        tdAlat.textContent = namaAlat;
+        const tdJumlah = document.createElement('td');
+        tdJumlah.textContent = jumlah;
+        const tdSerial = document.createElement('td');
+        if (ALAT_DENGAN_NOMOR_SERI.includes(namaAlat)) {
+          tdSerial.textContent = serialNumbers.join(', ');
+        } else {
+          tdSerial.textContent = '-';
+        }
+        const tdAksi = document.createElement('td');
+        tdAksi.classList.add('actions');
+        const btnHapus = document.createElement('button');
+        btnHapus.textContent = 'Hapus';
+        btnHapus.classList.add('remove-btn');
+        btnHapus.type = 'button';
+        btnHapus.setAttribute('aria-label', `Hapus alat ${namaAlat} dari daftar`);
+        btnHapus.addEventListener('click', () => {
+          tr.remove();
+          if (tabelPeminjaman.querySelectorAll('tr:not(#kosongRow)').length === 0) {
+            kosongRow.style.display = '';
+          }
+        });
+        tdAksi.appendChild(btnHapus);
+
+        tr.appendChild(tdAlat);
+        tr.appendChild(tdJumlah);
+        tr.appendChild(tdSerial);
+        tr.appendChild(tdAksi);
+        tabelPeminjaman.appendChild(tr);
+      }
+
+      // Reset input alat
+      selectAlat.value = '';
+      inputAlatLain.value = '';
+      inputAlatLain.disabled = true;
+      inputJumlah.value = 1;
+      serialNumberSection.style.display = 'none'; // Sembunyikan kembali bagian nomor seri
+      serialNumberInputsContainer.innerHTML = ''; // Bersihkan input nomor seri
+      selectAlat.focus();
+    });
+
+    // Event listener untuk tombol Print
+    btnPrint.addEventListener('click', () => {
+      // Validasi sebelum mencetak
+      const namaPeminjam = namaPeminjamInput.value.trim();
+      const nrpPeminjam = nrpPeminjamInput.value.trim();
+      const tanggalPinjam = tanggalPinjamInput.value;
+      const tanggalKembali = tanggalKembaliInput.value;
+      const jumlahAlat = tabelPeminjaman.querySelectorAll('tr:not(#kosongRow)').length;
+
+      if (!namaPeminjam) {
+        alert('Nama Peminjam harus diisi sebelum mencetak.');
+        namaPeminjamInput.focus();
+        return;
+      }
+      if (!nrpPeminjam) {
+        alert('NRP Peminjam harus diisi sebelum mencetak.');
+        nrpPeminjamInput.focus();
+        return;
+      }
+      if (!tanggalPinjam) {
+        alert('Tanggal Peminjaman harus diisi sebelum mencetak.');
+        tanggalPinjamInput.focus();
+        return;
+      }
+      if (!tanggalKembali) {
+        alert('Tanggal Pengembalian harus diisi sebelum mencetak.');
+        tanggalKembaliInput.focus();
+        return;
+      }
+      if (jumlahAlat === 0) {
+        alert('Minimal 1 alat harus dipinjam sebelum mencetak.');
+        selectAlat.focus();
+        return;
+      }
+
+      // Jika semua valid, cetak formulir
+      window.print();
+    });
+
+    // Event listener untuk tombol Reset
+    btnReset.addEventListener('click', () => {
+      if (confirm('Apakah Anda yakin ingin mereset semua isian formulir? Data yang sudah diisi akan hilang.')) {
+        // Reset input form
+        namaPeminjamInput.value = '';
+        nrpPeminjamInput.value = '';
+        selectAlat.value = '';
+        inputAlatLain.value = '';
+        inputAlatLain.disabled = true;
+        inputJumlah.value = 1;
+        tanggalPinjamInput.value = '';
+        tanggalKembaliInput.value = '';
+        keteranganInput.value = '';
+        
+        // Reset bagian nomor seri
+        serialNumberSection.style.display = 'none';
+        serialNumberInputsContainer.innerHTML = '';
+        
+        // Reset tabel daftar alat
+        tabelPeminjaman.innerHTML = '';
+        const kosongRowNew = document.createElement('tr');
+        kosongRowNew.id = 'kosongRow';
+        kosongRowNew.innerHTML = '<td colspan="4" style="text-align:center; color:#999;">Belum ada alat yang ditambahkan</td>';
+        tabelPeminjaman.appendChild(kosongRowNew);
+        
+        // Set focus ke input pertama
+        namaPeminjamInput.focus();
+        
+        alert('Formulir berhasil direset.');
+      }
+    });
+  </script>
+</body>
+</html>

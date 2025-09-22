@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lab Surta - Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: #f8f9fa;
+      color: #333;
+    }
+
+    /* HEADER - sticky */
+    header {
+      background-color: #ff6600;
+      color: #fff;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 70px;
+    }
+
+    header .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    header .logo img {
+      width: 48px;
+      border-radius: 6px;
+    }
+
+    header .text-logo h1 {
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 1.1;
+      color: #fff;
+    }
+
+    header .text-logo span {
+      font-weight: 400;
+      font-size: 14px;
+      color: #f1f1f1;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #fff;
+      transition: width 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #222;
+    }
+
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: calc(100vh - 70px - 60px);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      background: #000;
+      flex-shrink: 0;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.2s ease-in-out;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide.active {
+      opacity: 1;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 720px;
+      padding: 0 20px;
+    }
+
+    .hero-content h2 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-shadow: 0 3px 8px rgba(0,0,0,0.7);
+    }
+
+    .hero-content p {
+      font-size: 1.25rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #fff;
+      color: #ff6600;
+      font-weight: 600;
+      padding: 14px 36px;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 6px 12px rgba(255, 102, 0, 0.5);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      font-size: 1.1rem;
+    }
+
+    .btn:hover {
+      background-color: #ff6600;
+      color: #fff;
+      box-shadow: 0 8px 16px rgba(255, 102, 0, 0.7);
+    }
+
+    /* MAIN CONTENT */
+    main {
+      max-width: 1100px;
+      margin: 40px auto 60px;
+      padding: 0 20px;
+      width: 100%;
+      flex-grow: 1;
+    }
+
+    /* Berita */
+    .berita {
+      margin-bottom: 60px; /* Ini akan diatur ulang oleh .berita-footer */
+    }
+
+    .berita h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ff6600;
+      margin-bottom: 24px;
+      border-left: 6px solid #ff6600;
+      padding-left: 12px;
+    }
+
+    .berita-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+      gap: 24px;
+    }
+
+    /* Modifikasi .berita-item agar seluruh kotak bisa diklik */
+    .berita-item {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(255, 102, 0, 0.15);
+      padding: 20px;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-decoration: none; /* Hapus underline default dari tautan */
+      color: inherit; /* Warisi warna teks dari parent */
+    }
+
+    .berita-item:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 20px rgba(255, 102, 0, 0.3);
+    }
+
+    .berita-item h4 {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+      color: #ff6600; /* Pastikan judul tetap berwarna oranye */
+    }
+
+    .berita-item p {
+      font-size: 1rem;
+      color: #555; /* Pastikan paragraf tetap berwarna abu-abu */
+      line-height: 1.4;
+      flex-grow: 1;
+      margin-bottom: 15px;
+    }
+
+    /* Sembunyikan tautan "Baca Selengkapnya" yang lama di dalam kotak berita */
+    .berita-item .read-more {
+      display: none;
+    }
+
+    /* Gaya untuk tautan "Baca Selengkapnya" yang baru di bawah kotak berita */
+    .berita-footer {
+      text-align: left; /* Posisikan ke kiri */
+      margin-top: 20px; /* Beri jarak dari kotak berita */
+      margin-bottom: 60px; /* Beri jarak ke bagian komentar */
+    }
+
+    .read-more-all {
+      display: inline-block;
+      font-weight: 600;
+      color: #ff6600;
+      text-decoration: none;
+      font-size: 1.1rem; /* Sedikit lebih besar dari sebelumnya */
+      padding: 8px 0; /* Sedikit padding agar mudah diklik */
+      transition: color 0.3s ease;
+    }
+
+    .read-more-all:hover {
+      color: #cc5200;
+      text-decoration: underline;
+    }
+
+
+    /* Komentar Mahasiswa */
+    .komentar {
+      margin-bottom: 40px;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+      overflow: hidden;
+      height: 250px; /* Akan disesuaikan oleh JS */
+      position: relative;
+    }
+
+    .komentar h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ff6600;
+      margin-bottom: 24px;
+      border-left: 6px solid #ff6600;
+      padding-left: 12px;
+    }
+
+    .komentar-list {
+      display: flex;
+      height: 280px;
+      transition: transform 0.6s ease;
+      will-change: transform;
+    }
+
+    .komentar-item {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(255, 102, 0, 0.15);
+      padding: 20px 25px 20px 25px;
+      color: #444;
+      position: relative;
+      font-style: normal;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      width: 320px;
+      height: 280px;
+      margin-right: 24px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    .komentar-item::before {
+      content: "“";
+      font-size: 3rem;
+      color: #ff6600;
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      font-weight: 700;
+      font-family: serif;
+    }
+
+    .komentar-item p {
+      margin-bottom: 4px;
+      line-height: 1.5;
+      padding-left: 30px;
+      flex-grow: 0;
+    }
+
+    .komentar-item .author {
+      font-weight: 600;
+      color: #ff6600;
+      font-size: 1rem;
+      text-align: right;
+      margin-top: 0;
+      padding-right: 30px;
+      position: relative;
+    }
+
+    .komentar-item .author::before {
+      content: "- ";
+      position: auto;
+      left: 80px;
+    }
+
+
+    /* FOOTER */
+    footer {
+      background-color: #ff6600;
+      color: #333;
+      text-align: center;
+      font-size: 13px;
+      padding: 18px 20px;
+      flex-shrink: 0;
+      height: 60px;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 20px;
+        height: 60px;
+      }
+      nav ul {
+        gap: 16px;
+      }
+      .hero {
+        height: calc(100vh - 60px - 60px);
+      }
+      .hero-content h2 {
+        font-size: 2.2rem;
+      }
+      .hero-content p {
+        font-size: 1rem;
+      }
+      .btn {
+        padding: 12px 28px;
+        font-size: 1rem;
+      }
+      main {
+        margin: 30px auto 40px;
+      }
+      .berita-item {
+        min-height: 220px;
+      }
+      .komentar {
+        height: 280px;
+      }
+      .komentar-item {
+        width: 280px;
+        height: 280px;
+        margin-right: 16px;
+      }
+      .berita-footer {
+        text-align: center; /* Pusatkan di mobile jika diinginkan */
+        margin-top: 15px;
+        margin-bottom: 40px;
+      }
+      .read-more-all {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="IMG/logoitenas.png" alt="Logo Itenas">
+      <div class="text-logo">
+        <h1>Laboratorium Surta</h1>
+        <span>Teknik Geodesi</span>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pratikum.html" aria-current="page">Praktikum</a></li>
+        <li><a href="alat.html">Alat</a></li>
+        <li><a href="daftarasisten.html">Daftar Asisten</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="slide active" style="background-image: url('Kemker.jpeg');"></div>
+    <div class="slide" style="background-image: url('Kemker21.jpg');"></div>
+    <div class="slide" style="background-image: url('slide3.jpg');"></div>
+
+    <div class="hero-content">
+      <h2>Selamat Datang di Laboratorium Surta</h2>
+      <p>Lab Surta merupakan pusat kegiatan akademik dan praktikum untuk mendukung pembelajaran Teknik Geodesi, menyediakan fasilitas alat, materi kuliah, dan bimbingan dari asisten.</p>
+      <a href="tentangkami.html" class="btn">Tentang Kami</a>
+    </div>
+  </section>
+
+  <main>
+    <!-- Berita -->
+    <section class="berita">
+      <h3>Berita Terbaru</h3>
+      <div class="berita-list">
+        <!-- Setiap kotak berita sekarang adalah tautan penuh -->
+        <a href="workshop-teknik-survei.html" target="_blank" rel="noopener" class="berita-item">
+          <h4>Pengumuman Asisten Praktikum Lab Surta Semester Genap 2025</h4>
+          <p>Dengan hormat, Laboratorium Surta Teknik Geodesi dengan bangga mengumumkan daftar nama mahasiswa yang telah terpilih sebagai Asisten Praktikum untuk Semester Genap Tahun Akademik 2024/2025.</p>
+          <!-- Tautan "Baca Selengkapnya" di sini sudah dihapus -->
+        </a>
+        <a href="pengadaan-alat-baru.html" target="_blank" rel="noopener" class="berita-item">
+          <h4>Kolaborasi Baru FTSP Itenas di Bidang Geospasial</h4>
+          <p>Fakultas Teknik Sipil dan Perencanaan (FTSP) Itenas resmi menandatangani Memorandum of Agreement (MoA) dengan PT Alat Ukur Indosurta pada 10 September 2025.</p>
+          <!-- Tautan "Baca Selengkapnya" di sini sudah dihapus -->
+        </a>
+        <a href="pengumuman-jadwal-praktikum.html" target="_blank" rel="noopener" class="berita-item">
+          <h4>Pengumuman Jadwal Praktikum</h4>
+          <p>Jadwal praktikum semester genap 2025 telah diumumkan. Pastikan Anda memeriksa jadwal terbaru dan persiapkan diri dengan baik agar praktikum berjalan lancar dan efektif.</p>
+          <!-- Tautan "Baca Selengkapnya" di sini sudah dihapus -->
+        </a>
+      </div>
+      <!-- Tautan "Baca Selengkapnya" yang baru, di luar grid berita -->
+      <div class="berita-footer">
+        <a href="semua-berita.html" class="read-more-all">Baca Selengkapnya &raquo;</a>
+      </div>
+    </section>
+
+    <!-- Komentar Mahasiswa -->
+    <section class="komentar">
+      <h3>Komentar Mahasiswa</h3>
+      <div class="komentar-list" id="komentarList">
+        <div class="komentar-item">
+          <p>Praktikum di Lab Surta sangat membantu saya memahami teori dan aplikasi teknik geodesi secara langsung.</p>
+          <div class="author">Ryvaldhi Dzacky</div>
+        </div>
+        <div class="komentar-item">
+          <p>Fasilitas dan bimbingan asisten sangat memadai, membuat proses belajar jadi lebih menyenangkan.</p>
+          <div class="author">Siti Nurhaliza</div>
+        </div>
+        <div class="komentar-item">
+          <p>Materi kuliah dan alat yang lengkap membuat saya lebih percaya diri menghadapi ujian dan tugas lapangan.</p>
+          <div class="author">Budi Santoso</div>
+        </div>
+        <div class="komentar-item">
+          <p>Asisten yang ramah dan profesional sangat membantu dalam proses praktikum.</p>
+          <div class="author">Rina Wijaya</div>
+        </div>
+        <div class="komentar-item">
+          <p>Lab Surta menyediakan alat yang lengkap dan modern, sangat mendukung pembelajaran.</p>
+          <div class="author">Dedi Kurniawan</div>
+        </div>
+        <div class="komentar-item">
+          <p>Materi praktikum selalu update dan sesuai dengan perkembangan teknologi geodesi.</p>
+          <div class="author">Maya Sari</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Lab Surta - Teknik Geodesi</p>
+  </footer>
+
+  <script>
+    // Hero slideshow
+    const slides = document.querySelectorAll(".hero .slide");
+    let heroIndex = 0;
+    setInterval(() => {
+      slides[heroIndex].classList.remove("active");
+      heroIndex = (heroIndex + 1) % slides.length;
+      slides[heroIndex].classList.add("active");
+    }, 5000);
+
+    // Komentar otomatis slideshow persegi
+    const komentarList = document.getElementById('komentarList');
+    const komentarItems = document.querySelectorAll('.komentar-item');
+    // Pastikan komentarItems memiliki setidaknya satu elemen sebelum mengakses offsetWidth
+    const itemWidth = komentarItems.length > 0 ? komentarItems[0].offsetWidth + 24 : 0; // width + margin-right
+    let currentPosition = 0;
+
+    function slideKomentar() {
+      if (itemWidth === 0) return; // Hindari error jika tidak ada item
+
+      // Hitung lebar total yang bisa digeser
+      const containerWidth = komentarList.parentElement.offsetWidth;
+      const totalItemsWidth = itemWidth * komentarItems.length;
+
+      // Jika semua item sudah terlihat atau tidak cukup item untuk digeser, reset posisi
+      if (totalItemsWidth <= containerWidth) {
+        currentPosition = 0;
+      } else {
+        currentPosition -= itemWidth;
+        // Jika sudah melewati batas akhir, kembali ke awal
+        if (currentPosition <= -(totalItemsWidth - containerWidth + itemWidth / 2)) { // Tambahkan sedikit toleransi
+          currentPosition = 0;
+        }
+      }
+      komentarList.style.transform = `translateX(${currentPosition}px)`;
+    }
+
+    let komentarInterval = setInterval(slideKomentar, 4000);
+
+    // Reset posisi saat resize
+    window.addEventListener('resize', () => {
+      currentPosition = 0;
+      komentarList.style.transform = `translateX(0)`;
+    });
+  </script>
+</body>
+</html>

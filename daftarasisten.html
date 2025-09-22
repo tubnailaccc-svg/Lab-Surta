@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Daftar Asisten - Laboratorium Surta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: #f8f9fa;
+      color: #333;
+    }
+
+    /* HEADER */
+    header {
+      background-color: #ff6600;
+      color: #fff;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 70px;
+    }
+    header .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header .logo img {
+      width: 48px;
+      border-radius: 6px;
+    }
+    header .text-logo {
+      /* Tidak pakai flex agar posisi teks sama persis */
+    }
+    header .text-logo h1 {
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 1.1;
+      color: #fff;
+      margin: 0;
+    }
+    header .text-logo span {
+      font-weight: 400;
+      font-size: 14px;
+      color: #f1f1f1;
+      margin: 0;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.3s ease;
+    }
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #fff;
+      transition: width 0.3s ease;
+    }
+    nav ul li a:hover {
+      color: #222;
+    }
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+    nav ul li a[aria-current="page"] {
+      font-weight: 700;
+      border-bottom: 2px solid #fff;
+    }
+
+    /* MAIN CONTENT */
+    main {
+      max-width: 700px;
+      margin: 40px auto 60px;
+      padding: 0 20px;
+      flex-grow: 1;
+      width: 100%;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(255, 102, 0, 0.15);
+      padding: 40px 30px;
+    }
+    h2.section-title {
+      color: #ff6600;
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 32px;
+      border-left: 8px solid #ff6600;
+      padding-left: 12px;
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    label {
+      font-weight: 600;
+      color: #ff6600;
+      margin-bottom: 6px;
+      display: block;
+      user-select: none;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea,
+    input[type="file"],
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #ff6600;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    textarea:focus,
+    input[type="file"]:focus,
+    select:focus {
+      outline: none;
+      border-color: #cc5200;
+      box-shadow: 0 0 6px rgba(204, 82, 0, 0.5);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    input[type="file"] {
+      padding: 6px 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      border: 2px solid #ff6600;
+      background: #fff;
+    }
+
+    button[type="submit"] {
+      background-color: #ff6600;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 14px 0;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    button[type="submit"]:hover,
+    button[type="submit"]:focus {
+      background-color: #cc5200;
+      outline: none;
+    }
+
+    /* FOOTER */
+    footer {
+      background-color: #ff6600;
+      color: #333;
+      text-align: center;
+      font-size: 13px;
+      padding: 18px 20px;
+      flex-shrink: 0;
+      height: 60px;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+      user-select: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 20px;
+        height: 60px;
+      }
+      nav ul {
+        gap: 16px;
+      }
+      main {
+        margin: 30px 15px 40px;
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="./logoitenas.png" alt="Logo Lab Surta" />
+      <div class="text-logo">
+        <h1>Laboratorium Surta</h1>
+        <span>Teknik Geodesi</span>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pratikum.html">Praktikum</a></li>
+        <li><a href="alat.html">Alat</a></li>
+        <li><a href="daftarasisten.html" aria-current="page">Daftar Asisten</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2 class="section-title">Form Daftar Asisten</h2>
+    <form action="#" method="post" enctype="multipart/form-data" novalidate>
+      <div>
+        <label for="nama">Nama Lengkap</label>
+        <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap" required autocomplete="name" />
+      </div>
+      <div>
+        <label for="nrp">NRP</label>
+        <input type="text" id="nrp" name="nrp" placeholder="Masukkan NRP" required pattern="\d+" title="NRP harus berupa angka" autocomplete="off" />
+      </div>
+      <div>
+        <label for="email">Gmail</label>
+        <input type="email" id="email" name="email" placeholder="contoh@gmail.com" required autocomplete="email" />
+      </div>
+      <div>
+        <label for="nomor">Nomor Telepon</label>
+        <input type="tel" id="nomor" name="nomor" placeholder="081234567890" required pattern="^\+?\d{9,15}$" title="Masukkan nomor telepon yang valid" autocomplete="tel" />
+      </div>
+      <div>
+        <label for="bidang">Pilih Bidang Asisten</label>
+        <select id="bidang" name="bidang" required>
+          <option value="" disabled selected>-- Pilih Bidang --</option>
+          <option value="kemah">Kemah Geospasial</option>
+          <option value="survei">Survei Terestris</option>
+          <option value="gnss">GNSS</option>
+          <option value="jaring">Jaring Kontrol Geodesi</option>
+          <option value="hidrografi">Hidrografi</option>
+          <option value="teknologi">Teknologi Geospasial Tata Ruang</option>
+        </select>
+      </div>
+      <div>
+        <label for="alasan">Alasan Ingin Daftar Asisten</label>
+        <textarea id="alasan" name="alasan" placeholder="Jelaskan alasan Anda ingin menjadi asisten" required></textarea>
+      </div>
+      <div>
+        <label for="cv">Upload CV (PDF maksimal 2MB)</label>
+        <input type="file" id="cv" name="cv" accept=".pdf" required />
+      </div>
+      <button type="submit">Daftar Sekarang</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>© 2025 Lab Surta - Teknik Geodesi</p>
+  </footer>
+</body>
+</html>

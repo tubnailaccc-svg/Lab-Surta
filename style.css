@@ -1,0 +1,112 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f9;
+  text-align: center;
+  margin: 0;
+  padding: 50px;
+}
+
+h1 {
+  color: #2c3e50;
+}
+
+p {
+  font-size: 18px;
+  color: #555;
+}
+
+/* Home */
+nav {
+  background: #2c3e50;
+  padding: 10px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  margin: 0 15px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Tabel */
+table {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+table th, table td {
+  padding: 12px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+table th {
+  background: #2c3e50;
+  color: white;
+}
+
+table tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+/* Daftar Asisten */
+.form-container {
+  width: 60%;
+  margin: 20px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: left;
+}
+
+form input, form textarea {
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+form button {
+  margin-top: 15px;
+  padding: 12px;
+  background: #2c3e50;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background: #1a242f;
+}
+

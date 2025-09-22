@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Praktikum Kemah Geospasial 2024</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f8f9fa;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    header {
+      background-color: #ff6600;
+      color: #fff;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 70px;
+    }
+    header .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header .logo img {
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
+      object-fit: contain;
+    }
+    header .text-logo {
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+    header .text-logo h1 {
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    header .text-logo span {
+      font-weight: 400;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.85);
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #fff;
+      transition: width 0.3s ease;
+    }
+    nav ul li a:hover {
+      color: #222;
+    }
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+    nav ul li a[aria-current="page"] {
+      font-weight: 700;
+      border-bottom: 2px solid #fff;
+    }
+
+    /* MAIN */
+    main {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+      flex-grow: 1;
+    }
+
+    /* Konten per Tahun */
+    .year-content {
+      display: block; /* langsung tampil */
+    }
+
+    .content-wrapper {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    .left-side, .right-side {
+      flex: 1 1 400px;
+      min-width: 300px;
+    }
+    /* Slideshow kegiatan */
+    .kegiatan-slideshow .slide {
+      display: none;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(255, 102, 0, 0.15);
+      padding: 10px;
+      background: white;
+      text-align: center;
+      max-height: none;
+      height: auto;
+    }
+    .kegiatan-slideshow .slide.active {
+      display: block;
+    }
+    .kegiatan-slideshow .slide img.kegiatan-photo {
+      width: 100% !important;
+      max-height: 600px !important;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+    .kegiatan-slideshow .slide-description {
+      margin-top: 8px;
+      font-size: 1rem;
+      color: #444;
+    }
+    /* Menghilangkan kontrol slide */
+    .kegiatan-slideshow .slide-controls,
+    .slideshow-container .slide-controls {
+      display: none;
+    }
+    /* Penjelasan kanan */
+    .right-side {
+      font-size: 1.1rem;
+      line-height: 1.5;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(255, 102, 0, 0.15);
+    }
+    /* Slideshow umum */
+    .slideshow-container {
+      margin-bottom: 50px;
+    }
+    .slideshow-title {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #ff6600;
+      margin-bottom: 16px;
+      border-left: 8px solid #ff6600;
+      padding-left: 12px;
+      text-transform: uppercase;
+    }
+    .slide {
+      display: none;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(255, 102, 0, 0.15);
+      padding: 20px;
+      text-align: center;
+      max-height: none !important;
+      height: auto !important;
+    }
+    .slide.active {
+      display: block;
+    }
+    /* Asisten */
+    .asisten-list {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .asisten-card {
+      width: 160px;
+      background: #fff3e6;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(255, 102, 0, 0.2);
+      padding: 12px;
+      text-align: center;
+      user-select: none;
+    }
+    .asisten-card img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ff6600;
+      margin-bottom: 8px;
+    }
+    .asisten-name {
+      font-weight: 600;
+      color: #ff6600;
+      margin-bottom: 4px;
+    }
+    .asisten-nrp {
+      font-style: italic;
+      color: #555;
+      font-size: 0.9rem;
+    }
+    /* Slide foto hasil kegiatan */
+    .slideshow-container#hasil-2025 .slide img.kegiatan-photo {
+      max-width: 100% !important;
+      max-height: 1000px !important;
+      height: auto !important;
+      border-radius: 12px;
+      object-fit: contain;
+      margin: 0 auto;
+      display: block;
+    }
+    .slide-description {
+      margin-top: 12px;
+      font-size: 1rem;
+      color: #444;
+    }
+
+    /* Khusus untuk gambar pertama hasil kegiatan 2025 - dipaksa lebih besar */
+    #hasil-2025 .slide[data-slide-index="0"] img.kegiatan-photo {
+      width: 100% !important;
+      height: 800px !important;
+      object-fit: fill !important;
+      max-height: none !important;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .content-wrapper {
+        flex-direction: column;
+      }
+      .left-side, .right-side {
+        min-width: 100%;
+      }
+      .asisten-list {
+        justify-content: center;
+      }
+      header {
+        padding: 15px 20px;
+        height: 60px;
+      }
+      nav ul {
+        gap: 16px;
+      }
+      .slideshow-container#hasil-2025 .slide img.kegiatan-photo {
+        max-height: 500px !important;
+      }
+      #hasil-2025 .slide[data-slide-index="0"] img.kegiatan-photo {
+        height: 400px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="IMG/logoitenas.png" alt="Logo Lab Surta" />
+      <div class="text-logo">
+        <h1>Laboratorium Surta</h1>
+        <span>Teknik Geodesi</span>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pratikum.html">Praktikum</a></li>
+        <li><a href="alat.html">Alat</a></li>
+        <li><a href="daftarasisten.html">Daftar Asisten</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Langsung tampil konten 2025 tanpa tombol -->
+    <div id="content-2025" class="year-content active">
+      <div class="content-wrapper">
+        <div class="left-side">
+          <div class="kegiatan-slideshow" id="kegiatan-2025">
+            <div class="slide active" data-slide-index="0">
+              <img src="IMG/Kemker.jpeg" alt="Foto kegiatan Survei Lokasi Geospasial 2025" class="kegiatan-photo" />
+              <div class="slide-description">Kegiatan Kemah Geospasial 2025</div>
+            </div>
+            <div class="slide" data-slide-index="1">
+              <img src="IMG/25kemker.png" alt="Foto kegiatan 2 Kemah Geospasial 2025" class="kegiatan-photo" />
+              <div class="slide-description">Kegiatan Kemah Geospasial 2025</div>
+            </div>
+          </div>
+        </div>
+        <div class="right-side">
+          <h2>Kemah Geospasial</h2>
+          <p>
+            Kegiatan kemah geospasial tahun 2024 merupakan kegiatan lapangan yang bertujuan untuk mengaplikasikan ilmu geodesi dan pemetaan secara praktis di lapangan. Peserta akan belajar teknik survei, pengolahan data, dan pemanfaatan teknologi geospasial. Selain itu, kegiatan ini juga melatih kerja sama, tanggung jawab, dan kepedulian terhadap masyarakat. 
+          </p>
+        </div>
+      </div>
+
+      <!-- Slideshow Asisten 2025 -->
+      <div class="slideshow-container" id="asisten-2025" aria-label="Slide show Asisten 2025">
+         <div class="slideshow-title">Asisten Pengajar 2025</div>
+        <div class="slide active" data-slide-index="0">
+          <div class="asisten-list">
+            <div class="asisten-card">
+              <img src="IMG/tedymas.png" alt="Foto Andi Prasetyo" />
+              <div class="asisten-name">Tedy Mas Budiman (Koordinator)</div>
+              <div class="asisten-nrp">NRP: 23-2021-017</div>
+            </div>
+            <div class="asisten-card">
+              <img src="IMG/RyvaldhiDzacky.jpg" alt="" />
+              <div class="asisten-name">Ryvaldhi Dzacky Andyti Sudrajat</div>
+              <div class="asisten-nrp">NRP: 23-2021-001</div>
+            </div>
+            <div class="asisten-card">
+              <img src="IMG/RizkyE.jpg" alt="Foto Rizky Maulana" />
+              <div class="asisten-name">Rizky Ramadhan E</div>
+              <div class="asisten-nrp">NRP: 23-2021-012</div>
+            </div>
+            <div class="asisten-card">
+              <img src="IMG/imgdeaf.png" alt="Foto Agus Prabowo" />
+              <div class="asisten-name">Danisti Hajar Aulia</div>
+              <div class="asisten-nrp">NRP: 23-2021-065</div>
+            </div>
+            <div class="asisten-card">
+              <img src="IMG/imgdeaf.png" alt="Foto Dewi Anggraini" />
+              <div class="asisten-name">Regiana Zalfa Salsabila</div>
+              <div class="asisten-nrp">NRP: 23-2021-066</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slideshow Hasil Kegiatan 2025 -->
+      <div class="slideshow-container" id="hasil-2025" aria-label="Slide show Hasil Kegiatan 2025">
+        <div class="slideshow-title">Hasil Kegiatan 2025</div>
+        <div class="slide active" data-slide-index="0">
+          <img src="IMG/Orto2025.png" alt="Foto hasil kegiatan 1 tahun 2025" class="kegiatan-photo" />
+          <div class="slide-description">ORTHOPOTO</div>
+        </div>
+        <div class="slide" data-slide-index="1">
+          <img src="IMG/Peta Gabungan Detail Situasi2025.jpg" alt="Foto hasil kegiatan 2 tahun 2025" class="kegiatan-photo" />
+          <div class="slide-description">DETAIL SITUASI</div>
+        </div>
+        <div class="slide" data-slide-index="2">
+          <img src="IMG/Peta Gabungan Kontur_page-0001.jpg" alt="Foto hasil kegiatan 3 tahun 2025" class="kegiatan-photo" />
+          <div class="slide-description">KONTUR</div>
+        </div>
+        <div class="slide" data-slide-index="3">
+          <img src="IMG/petatutupanlahan2025.jpg" alt="Foto hasil kegiatan 4 tahun 2025" class="kegiatan-photo" />
+          <div class="slide-description">TUTUPAN LAHAN</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background:#ff6600; color:#333; text-align:center; padding:18px 20px; font-size:13px;">
+    © 2025 Lab Surta - Teknik Geodesi
+  </footer>
+
+  <script>
+    // Objek untuk menyimpan interval slideshow agar bisa dihentikan
+    const activeSlideshowIntervals = {};
+
+    // Fungsi slideshow otomatis tanpa tombol navigasi
+    function setupAutoSlideshow(containerId, intervalTime) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      const slides = container.querySelectorAll('.slide');
+      if (slides.length === 0) return;
+
+      let currentIndex = 0;
+
+      function showSlide(index) {
+        slides.forEach((slide, i) => {
+          slide.classList.toggle('active', i === index);
+        });
+      }
+
+      function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        showSlide(currentIndex);
+      }
+
+      if (activeSlideshowIntervals[containerId]) {
+        clearInterval(activeSlideshowIntervals[containerId]);
+      }
+
+      if (intervalTime > 0) {
+        activeSlideshowIntervals[containerId] = setInterval(nextSlide, intervalTime);
+      }
+
+      showSlide(currentIndex);
+    }
+
+    // Inisialisasi slideshow untuk tahun 2025 saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+      setupAutoSlideshow('kegiatan-2025', 10000);
+      setupAutoSlideshow('hasil-2025', 10000);
+    });
+  </script>
+</body>
+</html>

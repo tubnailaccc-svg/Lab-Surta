@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lab Surta - Praktikum</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: #f8f9fa;
+      color: #333;
+    }
+
+    /* HEADER - sticky */
+    header {
+      background-color: #ff6600;
+      color: #fff;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 70px;
+    }
+
+    header .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    header .logo img {
+      width: 48px;
+      border-radius: 6px;
+    }
+
+    header .text-logo h1 {
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 1.1;
+      color: #fff;
+    }
+
+    header .text-logo span {
+      font-weight: 400;
+      font-size: 14px;
+      color: #f1f1f1;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #fff;
+      transition: width 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #222;
+    }
+
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+    nav ul li a[aria-current="page"] {
+      font-weight: 700;
+      border-bottom: 2px solid #fff;
+    }
+
+    /* MAIN CONTENT */
+    main {
+      max-width: 1100px;
+      margin: 40px auto 60px;
+      padding: 0 20px;
+      width: 100%;
+      flex-grow: 1;
+    }
+
+    /* Page Header - New Style */
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 30px 0;
+      background: linear-gradient(135deg, #ff6600, #ff8c00);
+      border-radius: 15px;
+      color: white;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex; /* Menggunakan flexbox untuk menata ikon dan teks */
+      align-items: center;
+      justify-content: center;
+      gap: 20px; /* Jarak antara ikon dan teks */
+    }
+
+       /* Gaya untuk ikon gambar baru */
+    .page-header .header-icon {
+      width: 60px; /* Sesuaikan ukuran ikon */
+      height: 60px;
+      margin-right: 150px;
+      object-fit: contain; /* Pastikan gambar tidak terpotong */
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); /* Tambahkan sedikit bayangan */
+      margin-right: -25px; /* margin negatif agar ikon menempel ke teks */
+    }
+
+    .page-header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Praktikum List Grid */
+    .praktikum-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+    }
+
+    .praktikum-item {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(255, 102, 0, 0.15);
+      padding: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      min-height: 280px;
+    }
+
+    .praktikum-item:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 28px rgba(255, 102, 0, 0.3);
+    }
+
+    .praktikum-image {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      user-select: none;
+    }
+
+    .praktikum-item h4 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ff6600;
+      margin-bottom: 12px;
+      text-transform: capitalize;
+    }
+
+    .praktikum-item h4 a {
+      color: #ff6600;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: inline-block;
+    }
+
+    .praktikum-item h4 a:hover {
+      text-decoration: underline;
+      color: #cc5200;
+    }
+
+    .praktikum-item p {
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.5;
+      flex-grow: 1;
+    }
+
+    /* FOOTER */
+    footer {
+      background-color: #ff6600;
+      color: #333;
+      text-align: center;
+      font-size: 13px;
+      padding: 18px 20px;
+      flex-shrink: 0;
+      height: 60px;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 20px;
+        height: 60px;
+      }
+      nav ul {
+        gap: 16px;
+      }
+      main {
+        margin: 30px auto 40px;
+      }
+      .praktikum-item {
+        min-height: 260px;
+        padding: 18px;
+      }
+      .praktikum-image {
+        height: 120px;
+      }
+      .page-header h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="IMG/logoitenas.png" alt="Logo Lab Surta" />
+      <div class="text-logo">
+        <h1>Laboratorium Surta</h1>
+        <span>Teknik Geodesi</span>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pratikum.html">Praktikum</a></li>
+        <li><a href="alat.html">Alat</a></li>
+        <li><a href="daftarasisten.html">Daftar Asisten</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="page-header">
+      <h1>
+        <img src="IMG/pratikum.png" alt="Ikon Lab Surta" class="header-icon" />
+        Daftar Peralatan Laboratorium
+      </h1>
+      <p>Berikut adalah daftar praktikum yang tersedia di Laboratorium Surta Teknik Geodesi.</p>
+    </div>
+
+    <div class="praktikum-list">
+      <div class="praktikum-item">
+        <img src="IMG/logokemker.png" alt="Kemah Geospasial" class="praktikum-image" />
+        <h4><a href="kemah-geospasial.html">Kemah Geospasial</a></h4>
+        <p>Praktikum lapangan yang mengajarkan teknik pengumpulan data geospasial secara langsung dengan metode survei dan pemetaan modern.</p>
+      </div>
+      <div class="praktikum-item">
+        <img src="IMG/logost.png" alt="Survei Terestris" class="praktikum-image" />
+        <h4><a href="survei-terestris.html">Survei Terestris</a></h4>
+        <p>Pelatihan penggunaan alat survei terestris seperti total station dan theodolit untuk pengukuran presisi di lapangan.</p>
+      </div>
+      <div class="praktikum-item">
+        <img src="IMG/logognss.png" alt="GNSS" class="praktikum-image" />
+        <h4><a href="gnss.html">GNSS</a></h4>
+        <p>Praktikum penggunaan Global Navigation Satellite System untuk penentuan posisi dan navigasi dengan akurasi tinggi.</p>
+      </div>
+      <div class="praktikum-item">
+        <img src="IMG/logojkg.png" alt="Jaring Kontrol Geodesi" class="praktikum-image" />
+        <h4><a href="jaring-kontrol-geodesi.html">Jaring Kontrol Geodesi</a></h4>
+        <p>Pengembangan dan pengukuran jaring kontrol geodesi sebagai dasar untuk pemetaan dan survei yang akurat.</p>
+      </div>
+      <div class="praktikum-item">
+        <img src="IMG/logohidro.png" alt="Hidrografi" class="praktikum-image" />
+        <h4><a href="hidrografi.html">Hidrografi</a></h4>
+        <p>Praktikum pengukuran dan pemetaan kondisi perairan, termasuk kedalaman dan kontur dasar laut atau sungai.</p>
+      </div>
+      <div class="praktikum-item">
+        <img src="IMG/logotgtr.png" alt="Teknologi Geospasial Tata Ruang" class="praktikum-image" />
+        <h4><a href="teknologi-geospasial-tata-ruang.html">Teknologi Geospasial Tata Ruang</a></h4>
+        <p>Penerapan teknologi geospasial dalam perencanaan dan pengelolaan tata ruang wilayah secara efektif dan efisien.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Lab Surta - Teknik Geodesi</p>
+  </footer>
+
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

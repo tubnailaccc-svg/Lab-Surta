@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Berita Kemah Geospasial | Lab Surta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f8f9fa;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    header {
+      background-color: #ff6600;
+      color: #fff;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 70px;
+    }
+    header .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header .logo img {
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
+      object-fit: contain;
+    }
+    header .text-logo {
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+    header .text-logo h1 {
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    header .text-logo span {
+      font-weight: 400;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.85);
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #fff;
+      transition: width 0.3s ease;
+    }
+    nav ul li a:hover {
+      color: #222;
+    }
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+    nav ul li a[aria-current="page"] {
+      font-weight: 700;
+      border-bottom: 2px solid #fff;
+    }
+
+    /* MAIN - News Section */
+    main {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+      flex-grow: 1;
+    }
+
+    .news-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 30px 0;
+      background: linear-gradient(135deg, #ff6600, #ff8c00);
+      border-radius: 15px;
+      color: white;
+    }
+
+    .news-header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .news-header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* News Grid */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+
+    .news-card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .news-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+
+    .news-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .news-content {
+      padding: 25px;
+    }
+
+    .news-date {
+      color: #ff6600;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .news-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 15px;
+      line-height: 1.4;
+    }
+
+    .news-excerpt {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .news-category {
+      display: inline-block;
+      background: #fff3e6;
+      color: #ff6600;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* Featured News */
+    .featured-news {
+      margin-bottom: 50px;
+    }
+
+    .featured-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .featured-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .featured-content {
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .featured-badge {
+      background: #ff6600;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 15px;
+    }
+
+    .featured-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 20px;
+      line-height: 1.3;
+    }
+
+    .featured-excerpt {
+      color: #666;
+      line-height: 1.7;
+      margin-bottom: 25px;
+      font-size: 1.1rem;
+    }
+
+    .read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #ff6600;
+      font-weight: 600;
+      text-decoration: none;
+      transition: gap 0.3s ease;
+    }
+
+    .read-more:hover {
+      gap: 12px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .news-header h1 {
+        font-size: 2rem;
+      }
+      
+      .news-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .featured-card {
+        grid-template-columns: 1fr;
+      }
+      
+      .featured-title {
+        font-size: 1.6rem;
+      }
+      
+      header {
+        padding: 15px 20px;
+      }
+      
+      nav ul {
+        gap: 16px;
+      }
+    }
+
+    /* Loading Animation */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .news-card, .featured-card {
+      animation: fadeInUp 0.6s ease;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="./logoitenas.png" alt="Logo Lab Surta" />
+      <div class="text-logo">
+        <h1>Laboratorium Surta</h1>
+        <span>Teknik Geodesi</span>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pratikum.html">Praktikum</a></li>
+        <li><a href="alat.html">Alat</a></li>
+        <li><a href="daftarasisten.html">Daftar Asisten</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="news-header">
+      <h1><i class="fas fa-newspaper"></i> Berita Terkini</h1>
+      <p>Ikuti perkembangan terbaru kegiatan Kemah Geospasial Laboratorium Surta</p>
+    </div>
+
+    <!-- Featured News -->
+    <div class="featured-news">
+      <div class="featured-card">
+        <img src="https://placeholder-image-service.onrender.com/image/600x400?prompt=Kegiatan%20Kemah%20Geospasial%20dengan%20peserta%20sedang%20melakukan%20pengukuran%20lapangan&id=featured1" alt="Kegiatan utama Kemah Geospasial 2025 dengan peserta melakukan pengukuran menggunakan alat canggih" class="featured-image" />
+        <div class="featured-content">
+          <span class="featured-badge">FEATURED</span>
+          <h2 class="featured-title">Kemah Geospasial 2025 Resmi Dibuka dengan Peserta dari Seluruh Indonesia</h2>
+          <p class="featured-excerpt">
+            Kegiatan Kemah Geospasial tahun 2025 resmi dimulai dengan peserta dari berbagai universitas di Indonesia. Acara pembukaan dihadiri oleh rektor dan para ahli geospasial nasional.
+          </p>
+          <a href="#" class="read-more">
+            Baca selengkapnya <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- News Grid -->
+    <div class="news-grid">
+      <!-- News 1 -->
+      <div class="news-card">
+        <img src="https://placeholder-image-service.onrender.com/image/400x300?prompt=Pelatihan%20penggunaan%20GPS%20untuk%20pemetaan%20digital&id=news1" alt="Sesi pelatihan penggunaan GPS canggih untuk pemetaan digital dengan peserta aktif" class="news-image" />
+        <div class="news-content">
+          <div class="news-date"><i class="far fa-calendar"></i> 15 Desember 2024</div>
+          <h3 class="news-title">Workshop Penggunaan Teknologi GPS Modern untuk Pemetaan Digital</h3>
+          <p class="news-excerpt">Pelatihan intensif penggunaan perangkat GPS terkini untuk meningkatkan akurasi pemetaan digital dalam survei geospasial.</p>
+          <span class="news-category">Workshop</span>
+        </div>
+      </div>
+
+      <!-- News 2 -->
+      <div class="news-card">
+        <img src="https://placeholder-image-service.onrender.com/image/400x300?prompt=Presentasi%20hasil%20penelitian%20geospasial%20oleh%20mahasiswa&id=news2" alt="Presentasi hasil penelitian geospasial oleh mahasiswa dengan tampilan data visual" class="news-image" />
+        <div class="news-content">
+          <div class="news-date"><i class="far fa-calendar"></i> 10 Desember 2024</div>
+          <h3 class="news-title">Mahasiswa Raih Penghargaan untuk Inovasi Teknologi Geospasial</h3>
+          <p class="news-excerpt">Tim mahasiswa berhasil mengembangkan sistem pemetaan berbasis AI yang mendapatkan apresiasi di tingkat nasional.</p>
+          <span class="news-category">Prestasi</span>
+        </div>
+      </div>
+
+      <!-- News 3 -->
+      <div class="news-card">
+        <img src="https://placeholder-image-service.onrender.com/image/400x300?prompt=Kunjungan%20industri%20ke%20perusahaan%20survey%20dan%20pemetaan&id=news3" alt="Kunjungan industri ke perusahaan survey dan pemetaan dengan diskusi teknologi terbaru" class="news-image" />
+        <div class="news-content">
+          <div class="news-date"><i class="far fa-calendar"></i> 5 Desember 2024</div>
+          <h3 class="news-title">Kerjasama dengan Industri: Kunjungan ke Perusahaan Survey Terkemuka</h3>
+          <p class="news-excerpt">Program kunjungan industri memberikan wawasan praktis tentang aplikasi ilmu geospasial di dunia kerja.</p>
+          <span class="news-category">Kerjasama</span>
+        </div>
+      </div>
+
+      <!-- News 4 -->
+      <div class="news-card">
+        <img src="https://placeholder-image-service.onrender.com/image/400x300?prompt=Seminar%20nasional%20teknologi%20geospasial%20dengan%20pembicara%20ahli&id=news4" alt="Seminar nasional teknologi geospasial dengan pembicara ahli dan peserta antusias" class="news-image" />
+        <div class="news-content">
+          <div class="news-date"><i class="far fa-calendar"></i> 28 November 2024</div>
+          <h3 class="news-title">Seminar Nasional: Masa Depan Teknologi Geospasial di Era Digital</h3>
+          <p class="news-excerpt">Ahli geospasial nasional berbagi insight tentang perkembangan teknologi dan peluang karir di bidang survei dan pemetaan.</p>
+          <span class="news-category">Seminar</span>
+        </div>
+      </div>
+
+      <!-- News 5 -->
+      <div class="news-card">
+        <img src="https://placeholder-image-service.onrender.com/image/400x300?prompt=Aktivitas%20lapangan%20survey%20dengan%20peralatan%20modern&id=news5" alt="Aktivitas lapangan survey dengan peralatan modern dan tim kerja yang kompak" class="news-image" />
+        <div class="news-content">
+          <div class="news-date"><i class="far fa-calendar"></i> 20 November 2024</div>
+          <h3 class="news-title">Praktikum Lapangan: Menerapkan Teori ke dalam Praktek Nyata</h3>
+          <p class="news-excerpt">Mahasiswa menerapkan ilmu yang dipelajari di kelas melalui praktikum lapangan dengan bimbingan asisten berpengalaman.</p>
+          <span class="news-category">Praktikum</span>
+        </div>
+      </div>
+
+      <!-- News 6 -->
+      <div class="news-card">
+        <img src="https://placeholder-image-service.onrender.com/image/400x300?prompt=Peresmian%20alat%20baru%20laboratorium%20geospasial&id=news6" alt="Peresmian alat baru laboratorium geospasial dengan teknologi terkini" class="news-image" />
+        <div class="news-content">
+          <div class="news-date"><i class="far fa-calendar"></i> 12 November 2024</div>
+          <h3 class="news-title">Laboratorium Surta Kini Dilengkapi dengan Alat Survey Terbaru</h3>
+          <p class="news-excerpt">Peralatan survey terbaru telah tersedia untuk mendukung proses belajar mengajar dan penelitian mahasiswa.</p>
+          <span class="news-category">Fasilitas</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background:#ff6600; color:#333; text-align:center; padding:18px 20px; font-size:13px;">
+    © 2025 Lab Surta - Teknik Geodesi
+  </footer>
+
+  <script>
+    // Simple animation for news cards
+    document.addEventListener('DOMContentLoaded', function() {
+      const newsCards = document.querySelectorAll('.news-card');
+      const featuredCard = document.querySelector('.featured-card');
+      
+      // Add delay for staggered animation
+      newsCards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+      });
+      
+      featuredCard.style.animationDelay = '0.2s';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Praktikum Kemah Geospasial 2024</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f8f9fa;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    header {
+      background-color: #ff6600;
+      color: #fff;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 70px;
+    }
+    header .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header .logo img {
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
+      object-fit: contain;
+    }
+    header .text-logo {
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+    header .text-logo h1 {
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    header .text-logo span {
+      font-weight: 400;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.85);
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #fff;
+      transition: width 0.3s ease;
+    }
+    nav ul li a:hover {
+      color: #222;
+    }
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+    nav ul li a[aria-current="page"] {
+      font-weight: 700;
+      border-bottom: 2px solid #fff;
+    }
+
+    /* MAIN - Comming Soon */
+    main {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .coming-soon {
+      background: white;
+      padding: 60px 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(255, 102, 0, 0.2);
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .coming-soon h2 {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #ff6600;
+      margin-bottom: 20px;
+    }
+
+    .coming-soon p {
+      font-size: 1.2rem;
+      color: #666;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="./logoitenas.png" alt="Logo Lab Surta" />
+      <div class="text-logo">
+        <h1>Laboratorium Surta</h1>
+        <span>Teknik Geodesi</span>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pratikum.html" aria-current="page">Praktikum</a></li>
+        <li><a href="alat.html">Alat</a></li>
+        <li><a href="daftarasisten.html">Daftar Asisten</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="coming-soon">
+      <h2>COMING SOON</h2>
+      <p>Halaman sedang dalam pengembangan. Silakan kembali lagi nanti!</p>
+    </div>
+  </main>
+
+  <footer style="background:#ff6600; color:#333; text-align:center; padding:18px 20px; font-size:13px;">
+    © 2025 Lab Surta - Teknik Geodesi
+  </footer>
+</body>
+</html>
