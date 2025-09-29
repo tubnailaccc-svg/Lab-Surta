@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Lab Surta - Praktikum</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     /* Reset & base */
     * {
@@ -44,6 +43,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      z-index: 1001; /* Pastikan logo di atas menu saat terbuka */
     }
 
     header .logo img {
@@ -62,6 +62,34 @@
       font-weight: 400;
       font-size: 14px;
       color: #f1f1f1;
+    }
+
+    /* HAMBURGER MENU ICON - Hanya tampil di mobile */
+    .hamburger {
+      display: none; /* Sembunyikan secara default */
+      flex-direction: column;
+      justify-content: space-around;
+      width: 30px;
+      height: 25px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 1001; /* Pastikan ikon di atas menu saat terbuka */
+    }
+
+    .hamburger span {
+      width: 100%;
+      height: 3px;
+      background-color: #fff;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    /* NAVIGASI - Default state (Desktop) */
+    nav {
+      display: block;
     }
 
     nav ul {
@@ -136,7 +164,6 @@
     .page-header .header-icon {
       width: 60px; /* Sesuaikan ukuran ikon */
       height: 60px;
-      margin-right: 150px;
       object-fit: contain; /* Pastikan gambar tidak terpotong */
       filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); /* Tambahkan sedikit bayangan */
       margin-right: -25px; /* margin negatif agar ikon menempel ke teks */
@@ -221,15 +248,81 @@
       box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
     }
 
-    /* Responsive */
+    /* Responsive - HAMBURGER MENU */
     @media (max-width: 768px) {
       header {
         padding: 15px 20px;
-        height: 60px;
       }
+
+      /* Tampilkan hamburger menu */
+      .hamburger {
+        display: flex;
+      }
+
+      /* Sembunyikan navigasi default */
+      nav {
+        position: fixed;
+        top: 70px; /* Tinggi header */
+        left: 0;
+        width: 100%;
+        height: 0; /* Awalnya tersembunyi */
+        background-color: #ff6600;
+        overflow: hidden;
+        transition: height 0.4s ease;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        z-index: 999; /* Di bawah logo dan hamburger */
+      }
+
+      /* Tampilkan navigasi saat menu aktif */
+      nav.active {
+        height: calc(100vh - 70px); /* Set tinggi penuh layar dikurangi header */
+      }
+
       nav ul {
-        gap: 16px;
+        flex-direction: column;
+        gap: 0;
+        padding: 20px;
+        opacity: 0; /* Sembunyikan item menu saat transisi tinggi */
+        transition: opacity 0.3s ease 0.1s; /* Animasi opacity setelah tinggi berubah */
       }
+
+      nav.active ul {
+        opacity: 1; /* Tampilkan item menu saat aktif */
+      }
+
+      nav ul li {
+        width: 100%;
+      }
+
+      nav ul li a {
+        display: block;
+        padding: 16px 0;
+        font-size: 18px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        width: 100%;
+      }
+
+      nav ul li:last-child a {
+        border-bottom: none;
+      }
+
+      nav ul li a::after {
+        display: none; /* Sembunyikan efek garis bawah di mobile */
+      }
+
+      /* Animasi hamburger menjadi X */
+      .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+      }
+
       main {
         margin: 30px auto 40px;
       }
@@ -243,6 +336,11 @@
       .page-header h1 {
         font-size: 2rem;
       }
+      .page-header .header-icon {
+        width: 40px; /* Sesuaikan ukuran ikon di mobile */
+        height: 40px;
+        margin-right: -15px; /* Sesuaikan margin negatif */
+      }
     }
   </style>
 </head>
@@ -255,10 +353,18 @@
         <span>Teknik Geodesi</span>
       </div>
     </div>
-    <nav>
+
+    <!-- Hamburger Menu Button -->
+    <button class="hamburger" id="hamburgerMenu" aria-label="Toggle navigation menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav id="mainNav">
       <ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="pratikum.html">Praktikum</a></li>
+        <li><a href="pratikum.html" aria-current="page">Praktikum</a></li>
         <li><a href="alat.html">Alat</a></li>
         <li><a href="daftarasisten.html">Daftar Asisten</a></li>
       </ul>
@@ -269,7 +375,7 @@
     <div class="page-header">
       <h1>
         <img src="IMG/pratikum.png" alt="Ikon Lab Surta" class="header-icon" />
-        Daftar Peralatan Laboratorium
+        Daftar Praktikum Laboratorium
       </h1>
       <p>Berikut adalah daftar praktikum yang tersedia di Laboratorium Surta Teknik Geodesi.</p>
     </div>
@@ -312,6 +418,53 @@
     <p>© 2025 Lab Surta - Teknik Geodesi</p>
   </footer>
 
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script>
+    // HAMBURGER MENU FUNCTIONALITY
+    const hamburgerMenu = document.getElementById('hamburgerMenu');
+    const mainNav = document.getElementById('mainNav');
+
+    hamburgerMenu.addEventListener('click', function() {
+      // Toggle class active pada hamburger dan nav
+      this.classList.toggle('active');
+      mainNav.classList.toggle('active');
+      
+      // Mencegah scroll body saat menu terbuka
+      document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+    });
+
+    // Tutup menu saat klik di luar menu
+    document.addEventListener('click', function(event) {
+      const isClickInsideNav = mainNav.contains(event.target);
+      const isClickOnHamburger = hamburgerMenu.contains(event.target);
+      
+      if (!isClickInsideNav && !isClickOnHamburger && mainNav.classList.contains('active')) {
+        hamburgerMenu.classList.remove('active');
+        mainNav.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Tutup menu saat link di dalam menu diklik (untuk navigasi single page)
+    const navLinks = document.querySelectorAll('nav a');
+    navLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        // Hanya tutup jika menu sedang aktif
+        if (mainNav.classList.contains('active')) {
+          hamburgerMenu.classList.remove('active');
+          mainNav.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+
+    // Tutup menu saat ukuran layar berubah menjadi desktop
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768) {
+        hamburgerMenu.classList.remove('active');
+        mainNav.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+  </script>
 </body>
 </html>
