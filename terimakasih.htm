@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terima Kasih!</title>
+  <!-- Meta Refresh: Redirect ke index.html setelah 5 detik -->
+  <meta http-equiv="refresh" content="5;url=index.html" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #f8f9fa;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(255, 102, 0, 0.15);
+      padding: 40px 30px;
+      max-width: 500px;
+      width: 100%;
+    }
+    h1 {
+      color: #ff6600;
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .countdown {
+      font-size: 1rem;
+      color: #666;
+    }
+    a {
+      color: #ff6600;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Terima Kasih!</h1>
+    <p>Pendaftaran Anda telah berhasil kami terima.</p>
+    <p>Kami akan segera menghubungi Anda untuk langkah selanjutnya.</p>
+    <p class="countdown">Anda akan diarahkan kembali ke halaman utama dalam <span id="timer">5</span> detik.</p>
+    <p>Jika tidak diarahkan secara otomatis, klik <a href="index.html">di sini</a>.</p>
+  </div>
+
+  <script>
+    // Script untuk menampilkan hitungan mundur (opsional, tapi bagus untuk UX)
+    let count = 5;
+    const timerElement = document.getElementById('timer');
+
+    function updateTimer() {
+      timerElement.textContent = count;
+      if (count === 0) {
+        // Tidak perlu melakukan redirect di sini karena meta refresh sudah menanganinya
+        // Ini hanya untuk memastikan tampilan hitungan mundur sampai 0
+      } else {
+        count--;
+        setTimeout(updateTimer, 1000);
+      }
+    }
+    updateTimer();
+  </script>
+</body>
+</html>
