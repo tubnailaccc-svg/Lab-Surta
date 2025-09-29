@@ -14,6 +14,8 @@
     }
     html, body {
       height: 100%;
+      /* FIX: Mencegah scroll horizontal di mobile */
+      overflow-x: hidden; 
     }
     body {
       font-family: 'Poppins', sans-serif;
@@ -317,7 +319,10 @@
       }
 
       main {
-        margin: 30px 15px 40px;
+        /* FIX: Menggunakan margin auto untuk horizontal agar selalu di tengah */
+        margin: 30px auto 40px; 
+        /* Menambahkan max-width agar tidak terlalu lebar di layar yang sedikit lebih besar dari 768px */
+        max-width: calc(100% - 30px); /* 100% lebar dikurangi total margin horizontal (15px kiri + 15px kanan) */
         padding: 30px 20px;
       }
     }
@@ -326,7 +331,8 @@
 <body>
   <header>
     <div class="logo">
-      <img src="IMG/logoitenas.png" alt="Logo Lab Surta" />
+      <!-- Pastikan path gambar ini benar di server Anda -->
+      <img src="IMG/logoitenas.png" alt="Logo Lab Surta" /> 
       <div class="text-logo">
         <h1>Laboratorium Surta</h1>
         <span>Teknik Geodesi</span>
@@ -352,42 +358,53 @@
 
   <main>
     <h2 class="section-title">Form Daftar Asisten</h2>
-    <form action="#" method="post" enctype="multipart/form-data" novalidate>
+    <!-- FORMULIR DENGAN INTEGRASI FORMSUBMIT.CO -->
+    <form action="https://formsubmit.co/tubnailaccc@gmail.com" method="post" enctype="multipart/form-data" novalidate>
+      <!-- PENTING: Ganti 'tubnailaccc@gmail.com' dengan alamat email Anda yang sebenarnya -->
+      <!-- Anda perlu mengkonfirmasi email ini di Formsubmit.co setelah pengiriman pertama -->
+      
+      <!-- Hidden inputs untuk konfigurasi Formsubmit -->
+      <input type="hidden" name="_subject" value="Pendaftaran Asisten Lab Surta Baru!" />
+      <!-- PENTING: Ini akan mengarahkan pengguna ke trimakasih.html setelah sukses submit -->
+      <input type="hidden" name="_next" value="trimakasih.html" /> 
+      <input type="hidden" name="_captcha" value="true" /> <!-- Aktifkan CAPTCHA untuk mengurangi spam -->
+      <input type="hidden" name="_template" value="box" /> <!-- Mengatur format email yang diterima -->
+
       <div>
         <label for="nama">Nama Lengkap</label>
-        <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap" required autocomplete="name" />
+        <input type="text" id="nama" name="Nama Lengkap" placeholder="Masukkan nama lengkap" required autocomplete="name" />
       </div>
       <div>
         <label for="nrp">NRP</label>
-        <input type="text" id="nrp" name="nrp" placeholder="Masukkan NRP" required pattern="\d+" title="NRP harus berupa angka" autocomplete="off" />
+        <input type="text" id="nrp" name="NRP" placeholder="Masukkan NRP" required pattern="\d+" title="NRP harus berupa angka" autocomplete="off" />
       </div>
       <div>
         <label for="email">Gmail</label>
-        <input type="email" id="email" name="email" placeholder="contoh@gmail.com" required autocomplete="email" />
+        <input type="email" id="email" name="Gmail" placeholder="contoh@gmail.com" required autocomplete="email" />
       </div>
       <div>
         <label for="nomor">Nomor Telepon</label>
-        <input type="tel" id="nomor" name="nomor" placeholder="081234567890" required pattern="^\+?\d{9,15}$" title="Masukkan nomor telepon yang valid" autocomplete="tel" />
+        <input type="tel" id="nomor" name="Nomor Telepon" placeholder="081234567890" required pattern="^\+?\d{9,15}$" title="Masukkan nomor telepon yang valid" autocomplete="tel" />
       </div>
       <div>
         <label for="bidang">Pilih Bidang Asisten</label>
-        <select id="bidang" name="bidang" required>
+        <select id="bidang" name="Bidang Asisten" required>
           <option value="" disabled selected>-- Pilih Bidang --</option>
-          <option value="kemah">Kemah Geospasial</option>
-          <option value="survei">Survei Terestris</option>
-          <option value="gnss">GNSS</option>
-          <option value="jaring">Jaring Kontrol Geodesi</option>
-          <option value="hidrografi">Hidrografi</option>
-          <option value="teknologi">Teknologi Geospasial Tata Ruang</option>
+          <option value="Kemah Geospasial">Kemah Geospasial</option>
+          <option value="Survei Terestris">Survei Terestris</option>
+          <option value="GNSS">GNSS</option>
+          <option value="Jaring Kontrol Geodesi">Jaring Kontrol Geodesi</option>
+          <option value="Hidrografi">Hidrografi</option>
+          <option value="Teknologi Geospasial Tata Ruang">Teknologi Geospasial Tata Ruang</option>
         </select>
       </div>
       <div>
         <label for="alasan">Alasan Ingin Daftar Asisten</label>
-        <textarea id="alasan" name="alasan" placeholder="Jelaskan alasan Anda ingin menjadi asisten" required></textarea>
+        <textarea id="alasan" name="Alasan Daftar Asisten" placeholder="Jelaskan alasan Anda ingin menjadi asisten" required></textarea>
       </div>
       <div>
         <label for="cv">Upload CV (PDF maksimal 2MB)</label>
-        <input type="file" id="cv" name="cv" accept=".pdf" required />
+        <input type="file" id="cv" name="CV" accept=".pdf" required />
       </div>
       <button type="submit">Daftar Sekarang</button>
     </form>
