@@ -43,6 +43,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      z-index: 1001; /* Di atas menu */
     }
 
     header .logo img {
@@ -61,6 +62,34 @@
       font-weight: 400;
       font-size: 14px;
       color: #f1f1f1;
+    }
+
+    /* HAMBURGER MENU ICON - Hanya tampil di mobile */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 30px;
+      height: 25px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 1001;
+    }
+
+    .hamburger span {
+      width: 100%;
+      height: 3px;
+      background-color: #fff;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    /* NAVIGASI - Default state (Desktop) */
+    nav {
+      display: block;
     }
 
     nav ul {
@@ -219,7 +248,7 @@
       flex-direction: column;
       justify-content: space-between;
       text-decoration: none; /* Hapus underline default dari tautan */
-      color: inherit; /* Warisi warna teks dari parent */
+      color: inherit; /* Warini warna teks dari parent */
     }
 
     .berita-item:hover {
@@ -361,17 +390,82 @@
       box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
     }
 
-    /* Responsive */
+    /* Responsive - HAMBURGER MENU */
     @media (max-width: 768px) {
       header {
         padding: 15px 20px;
-        height: 60px;
       }
+
+      /* Tampilkan hamburger menu */
+      .hamburger {
+        display: flex;
+      }
+
+      /* Sembunyikan navigasi default */
+      nav {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        height: 0;
+        background-color: #ff6600;
+        overflow: hidden;
+        transition: height 0.4s ease;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      }
+
+      /* Tampilkan navigasi saat menu aktif */
+      nav.active {
+        height: calc(100vh - 70px);
+      }
+
       nav ul {
-        gap: 16px;
+        flex-direction: column;
+        gap: 0;
+        padding: 20px;
+        opacity: 0;
+        transition: opacity 0.3s ease 0.1s;
       }
+
+      nav.active ul {
+        opacity: 1;
+      }
+
+      nav ul li {
+        width: 100%;
+      }
+
+      nav ul li a {
+        display: block;
+        padding: 16px 0;
+        font-size: 18px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        width: 100%;
+      }
+
+      nav ul li:last-child a {
+        border-bottom: none;
+      }
+
+      nav ul li a::after {
+        display: none; /* Sembunyikan efek garis bawah di mobile */
+      }
+
+      /* Animasi hamburger menjadi X */
+      .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+      }
+
       .hero {
-        height: calc(100vh - 60px - 60px);
+        height: calc(100vh - 70px - 60px);
       }
       .hero-content h2 {
         font-size: 2.2rem;
@@ -398,7 +492,7 @@
         margin-right: 16px;
       }
       .berita-footer {
-        text-align: center; /* Pusatkan di mobile jika diinginkan */
+        text-align: center;
         margin-top: 15px;
         margin-bottom: 40px;
       }
@@ -417,7 +511,15 @@
         <span>Teknik Geodesi</span>
       </div>
     </div>
-    <nav>
+
+    <!-- Hamburger Menu Button -->
+    <button class="hamburger" id="hamburgerMenu" aria-label="Toggle navigation menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav id="mainNav">
       <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="pratikum.html" aria-current="page">Praktikum</a></li>
@@ -448,17 +550,14 @@
         <a href="workshop-teknik-survei.html" target="_blank" rel="noopener" class="berita-item">
           <h4>Pengumuman Asisten Praktikum Lab Surta Semester Genap 2025</h4>
           <p>Dengan hormat, Laboratorium Surta Teknik Geodesi dengan bangga mengumumkan daftar nama mahasiswa yang telah terpilih sebagai Asisten Praktikum untuk Semester Genap Tahun Akademik 2024/2025.</p>
-          <!-- Tautan "Baca Selengkapnya" di sini sudah dihapus -->
         </a>
         <a href="pengadaan-alat-baru.html" target="_blank" rel="noopener" class="berita-item">
           <h4>Kolaborasi Baru FTSP Itenas di Bidang Geospasial</h4>
           <p>Fakultas Teknik Sipil dan Perencanaan (FTSP) Itenas resmi menandatangani Memorandum of Agreement (MoA) dengan PT Alat Ukur Indosurta pada 10 September 2025.</p>
-          <!-- Tautan "Baca Selengkapnya" di sini sudah dihapus -->
         </a>
         <a href="pengumuman-jadwal-praktikum.html" target="_blank" rel="noopener" class="berita-item">
           <h4>Pengumuman Jadwal Praktikum</h4>
           <p>Jadwal praktikum semester genap 2025 telah diumumkan. Pastikan Anda memeriksa jadwal terbaru dan persiapkan diri dengan baik agar praktikum berjalan lancar dan efektif.</p>
-          <!-- Tautan "Baca Selengkapnya" di sini sudah dihapus -->
         </a>
       </div>
       <!-- Tautan "Baca Selengkapnya" yang baru, di luar grid berita -->
@@ -516,24 +615,20 @@
     // Komentar otomatis slideshow persegi
     const komentarList = document.getElementById('komentarList');
     const komentarItems = document.querySelectorAll('.komentar-item');
-    // Pastikan komentarItems memiliki setidaknya satu elemen sebelum mengakses offsetWidth
-    const itemWidth = komentarItems.length > 0 ? komentarItems[0].offsetWidth + 24 : 0; // width + margin-right
+    const itemWidth = komentarItems.length > 0 ? komentarItems[0].offsetWidth + 24 : 0;
     let currentPosition = 0;
 
     function slideKomentar() {
-      if (itemWidth === 0) return; // Hindari error jika tidak ada item
+      if (itemWidth === 0) return;
 
-      // Hitung lebar total yang bisa digeser
       const containerWidth = komentarList.parentElement.offsetWidth;
       const totalItemsWidth = itemWidth * komentarItems.length;
 
-      // Jika semua item sudah terlihat atau tidak cukup item untuk digeser, reset posisi
       if (totalItemsWidth <= containerWidth) {
         currentPosition = 0;
       } else {
         currentPosition -= itemWidth;
-        // Jika sudah melewati batas akhir, kembali ke awal
-        if (currentPosition <= -(totalItemsWidth - containerWidth + itemWidth / 2)) { // Tambahkan sedikit toleransi
+        if (currentPosition <= -(totalItemsWidth - containerWidth + itemWidth / 2)) {
           currentPosition = 0;
         }
       }
@@ -546,6 +641,50 @@
     window.addEventListener('resize', () => {
       currentPosition = 0;
       komentarList.style.transform = `translateX(0)`;
+    });
+
+    // HAMBURGER MENU FUNCTIONALITY
+    const hamburgerMenu = document.getElementById('hamburgerMenu');
+    const mainNav = document.getElementById('mainNav');
+
+    hamburgerMenu.addEventListener('click', function() {
+      // Toggle class active pada hamburger dan nav
+      this.classList.toggle('active');
+      mainNav.classList.toggle('active');
+      
+      // Mencegah scroll body saat menu terbuka
+      document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+    });
+
+    // Tutup menu saat klik di luar menu
+    document.addEventListener('click', function(event) {
+      const isClickInsideNav = mainNav.contains(event.target);
+      const isClickOnHamburger = hamburgerMenu.contains(event.target);
+      
+      if (!isClickInsideNav && !isClickOnHamburger && mainNav.classList.contains('active')) {
+        hamburgerMenu.classList.remove('active');
+        mainNav.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Tutup menu saat link di dalam menu diklik (untuk navigasi single page)
+    const navLinks = document.querySelectorAll('nav a');
+    navLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        hamburgerMenu.classList.remove('active');
+        mainNav.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // Tutup menu saat ukuran layar berubah menjadi desktop
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768) {
+        hamburgerMenu.classList.remove('active');
+        mainNav.classList.remove('active');
+        document.body.style.overflow = '';
+      }
     });
   </script>
 </body>
