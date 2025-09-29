@@ -297,10 +297,6 @@
         width: 100%;
       }
 
-      nav ul li:last-child a {
-        border-bottom: none;
-      }
-
       nav ul li a::after {
         display: none; /* Sembunyikan efek garis bawah di mobile */
       }
@@ -331,8 +327,7 @@
 <body>
   <header>
     <div class="logo">
-      <!-- Pastikan path gambar ini benar di server Anda -->
-      <img src="IMG/logoitenas.png" alt="Logo Lab Surta" /> 
+      <img src="IMG/logoitenas.png" alt="Logo Lab Surta" />
       <div class="text-logo">
         <h1>Laboratorium Surta</h1>
         <span>Teknik Geodesi</span>
@@ -358,17 +353,18 @@
 
   <main>
     <h2 class="section-title">Form Daftar Asisten</h2>
-    <!-- FORMULIR DENGAN INTEGRASI FORMSUBMIT.CO -->
-    <form action="https://formsubmit.co/tubnailaccc@gmail.com" method="post" enctype="multipart/form-data" novalidate>
-      <!-- PENTING: Ganti 'tubnailaccc@gmail.com' dengan alamat email Anda yang sebenarnya -->
-      <!-- Anda perlu mengkonfirmasi email ini di Formsubmit.co setelah pengiriman pertama -->
+    <!-- FORMULIR DENGAN INTEGRASI GETFORM.IO -->
+    <form action="https://getform.io/f/bkkprmpb" method="post" enctype="multipart/form-data" novalidate>
+      <!-- PENTING: Ganti 'YOUR_GETFORM_ENDPOINT_URL' dengan URL endpoint unik dari Getform.io Anda -->
       
-      <!-- Hidden inputs untuk konfigurasi Formsubmit -->
-      <input type="hidden" name="_subject" value="Pendaftaran Asisten Lab Surta Baru!" />
-      <!-- PENTING: Ini akan mengarahkan pengguna ke trimakasih.html setelah sukses submit -->
-      <input type="hidden" name="_next" value="trimakasih.html" /> 
-      <input type="hidden" name="_captcha" value="true" /> <!-- Aktifkan CAPTCHA untuk mengurangi spam -->
-      <input type="hidden" name="_template" value="box" /> <!-- Mengatur format email yang diterima -->
+      <!-- Hidden input untuk honeypot anti-spam Getform. JANGAN HAPUS! -->
+      <input type="hidden" name="_gotcha" style="display:none" /> 
+      
+      <!-- _redirect akan mengarahkan pengguna langsung ke index.html setelah pengiriman -->
+      <!-- Gunakan URL absolut jika situs Anda di-host di domain/subdomain -->
+      <!-- Contoh: <input type="hidden" name="_redirect" value="https://yourwebsite.com/index.html" /> -->
+      <!-- Jika index.html berada di root dan situs Anda diakses langsung, 'index.html' saja bisa berfungsi -->
+      <input type="hidden" name="_redirect" value="index.html" /> 
 
       <div>
         <label for="nama">Nama Lengkap</label>
@@ -420,19 +416,14 @@
     const mainNav = document.getElementById('mainNav');
 
     hamburgerMenu.addEventListener('click', function() {
-      // Toggle class active pada hamburger dan nav
       this.classList.toggle('active');
       mainNav.classList.toggle('active');
-      
-      // Mencegah scroll body saat menu terbuka
       document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
     });
 
-    // Tutup menu saat klik di luar menu
     document.addEventListener('click', function(event) {
       const isClickInsideNav = mainNav.contains(event.target);
       const isClickOnHamburger = hamburgerMenu.contains(event.target);
-      
       if (!isClickInsideNav && !isClickOnHamburger && mainNav.classList.contains('active')) {
         hamburgerMenu.classList.remove('active');
         mainNav.classList.remove('active');
@@ -440,11 +431,9 @@
       }
     });
 
-    // Tutup menu saat link di dalam menu diklik (untuk navigasi single page)
     const navLinks = document.querySelectorAll('nav a');
     navLinks.forEach(link => {
       link.addEventListener('click', function() {
-        // Hanya tutup jika menu sedang aktif
         if (mainNav.classList.contains('active')) {
           hamburgerMenu.classList.remove('active');
           mainNav.classList.remove('active');
@@ -453,7 +442,6 @@
       });
     });
 
-    // Tutup menu saat ukuran layar berubah menjadi desktop
     window.addEventListener('resize', function() {
       if (window.innerWidth > 768) {
         hamburgerMenu.classList.remove('active');
